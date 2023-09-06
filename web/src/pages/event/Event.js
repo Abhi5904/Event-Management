@@ -1,7 +1,7 @@
 import React, { useState, useRef, useContext, useEffect } from 'react'
 import Navbar from '../../components/navbar/Navbar';
 import Header from '../../components/header/Header';
-import {showAlert} from '../../components/alert/Alert'
+import { showAlert } from '../../components/alert/Alert'
 import { useNavigate } from 'react-router-dom'
 import "./event.css"
 import eventValue from '../../context/Eventcontext'
@@ -44,6 +44,8 @@ spnData.forEach(token => {
 const Event = () => {
   const ref = useRef(null)
   const refclose = useRef(null)
+  const refdelete = useRef(null)
+  const refdeleteclose = useRef(null)
   const [showMenu, setShowMenu] = useState(false);
   const [arrow, setarrow] = useState(false)
   const [arrowE, setarrowE] = useState(false)
@@ -64,7 +66,7 @@ const Event = () => {
   };
 
   const context = useContext(eventValue)
-  const { events, getevent, editevent, getcategory, getsponser } = context
+  const { events, getevent, editevent, getcategory, getsponser,deletevent } = context
   const [event, setEvent] = useState({ id: '', ename: '', edetail: '', elocation: '', estdate: '', eendate: '', econtact: '', eimage: '', enoticket: '', eprice: '', ecategory: '', esponser: '' })
   const [catg, setCatg] = useState([])
   const [spn, setSpn] = useState([])
@@ -98,6 +100,10 @@ const Event = () => {
     }
     // eslint-disable-next-line
   }, []);
+  console.log(catg)
+  console.log(catg.map((catgData) => {
+    console.log(new Date(catgData.date).getTime())
+  }))
   const updateEvent = (currentEvent) => {
     ref.current.click()
     setEvent({
@@ -123,7 +129,7 @@ const Event = () => {
       console.log('No matching category found');
     }
     editevent(event.id, event.ename, event.edetail, event.elocation, event.estdate, event.eendate, event.econtact, event.eimage, event.enoticket, event.eprice, event.ecategory, event.esponser)
-    showAlert('success',`event updated successfully`)
+    showAlert('success', `event updated successfully`)
   }
   const onchange = (e) => {
     setEvent({ ...event, [e.target.name]: e.target.value })
@@ -135,18 +141,37 @@ const Event = () => {
     let reader = new FileReader()
     reader.readAsDataURL(e.target.files[0])
     reader.onload = () => {
-      setEvent({ ...event,eimage: reader.result })
+      setEvent({ ...event, eimage: reader.result })
     }
     reader.onerror = (error) => {
       console.log('error:', error)
     }
   }
+
+  // delete event
+
+  const handledeleteEvent = (currentEvent) => {
+    refdelete.current.click()
+    setEvent({
+      id: currentEvent._id, ename: currentEvent.eventName, edetail: currentEvent.eventDescription, elocation: currentEvent.eventLocation, estdate: currentEvent.eventStDate, eendate: currentEvent.eventEndDate, econtact: currentEvent.contact, eimage: currentEvent.image, enoticket: currentEvent.noOfTicket, eprice: currentEvent.totalPrice, ecategory: currentEvent.category, esponser: currentEvent.sponser
+    })
+}
+const delevent = ()=>{
+  refdeleteclose.current.click()
+  deletevent(event.id)
+  localStorage.removeItem('categoryid')
+  localStorage.removeItem('sponserid')
+  showAlert('success',`event deleted successfully`)
+}
   // event table
   const [row, setRow] = useState(events)
   const [pg, setpg] = useState(0);
   const [rpg, setrpg] = useState(10);
   const [searched, setSearched] = useState("");
 
+  // for sorting category list descending order(to see recent event first)
+
+  events.sort((a, b) => new Date(b.date) - new Date(a.date))
   useEffect(() => {
     setRow(events);
   }, [events]);
@@ -175,6 +200,24 @@ const Event = () => {
     <>
       <div className="offcanvas__overlay"></div>
       <div className="offcanvas__overlay-white"></div>
+      <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Sponser</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Once a event is deleted, it cannot be recovered.
+              Do you want to delete a event?
+            </div>
+            <div class="modal-footer">
+              <button ref={refdeleteclose} type="button" class="btn btn-secondary d-none" data-bs-dismiss="modal">Close</button>
+              <button onClick={delevent} type="button" class="btn btn-primary">delete event</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg modal-dialog-centered">
           <div className="modal-content">
@@ -193,7 +236,7 @@ const Event = () => {
               </div>
               <div className="mb-3">
                 <label for="eimg" className="form-label text-dark">Add image</label>
-                <input className="form-control" onChange={convertToBase64} type="file" id="eimg" name='eimg'/>
+                <input className="form-control" onChange={convertToBase64} type="file" id="eimg" name='eimg' />
               </div>
               <div className="mb-3">
                 <label for="estdate" className="form-label text-dark" >Start Date</label>
@@ -201,7 +244,7 @@ const Event = () => {
               </div>
               <div className="mb-3">
                 <label for="endate" className="form-label text-dark" >End Date</label>
-                <input type="date" className="form-control" id="eendate" name='eendate' onChange={onchange} min={new Date().toISOString().split('T')[0] } placeholder="" value={event.eendate} />
+                <input type="date" className="form-control" id="eendate" name='eendate' onChange={onchange} min={new Date().toISOString().split('T')[0]} placeholder="" value={event.eendate} />
               </div>
               <div className="mb-3">
                 <label for="elocation" className="form-label text-dark">Venu / Address</label>
@@ -256,8 +299,8 @@ const Event = () => {
         <div className='page__body-wrapper'>
           <Header handleSidebarBtnClick={handleSidebarBtnClick} handleDropdown={handleDropdown} dropdown={dropdown} showMenu={showMenu} />
           <div className="app__slide-wrapper">
-            <HeaderTop text={'Event List'} btnText={'Add Event'} style={'visible'} redirect={"/event/addevent"}/>
-            
+            <HeaderTop text={'Event List'} btnText={'Add Event'} style={'visible'} redirect={"/event/addevent"} />
+            <button ref={refdelete} type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#delete"></button>
             <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
             </button>
             <div className="event__list-area pb-5 mt-5">
@@ -290,7 +333,7 @@ const Event = () => {
                               <TableBody>
                                 {row.length === 0 ? <TableCell>No event availabel please add event</TableCell> :
                                   row && row.slice(pg * rpg, pg * rpg + rpg).map((event, index) => {
-                                    return <Eventitem showAlert={showAlert} index={index} event={event} key={event._id} updateEvent={updateEvent} />
+                                    return <Eventitem showAlert={showAlert} index={index} event={event} key={event._id} updateEvent={updateEvent} handledeleteEvent={handledeleteEvent}/>
                                   })}
                               </TableBody>
                             </Table>

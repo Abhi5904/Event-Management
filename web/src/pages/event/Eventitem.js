@@ -1,17 +1,10 @@
-import React, { useContext } from 'react'
-import eventValue from '../../context/Eventcontext'
+import React from 'react'
 import { Eye, FileEdit, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+
 const Eventitem = (props) => {
-    const context = useContext(eventValue)
-    const { deletevent} = context
-    const { event, updateEvent, index,showAlert } = props
-    const handledeleteEvent = () => {
-        deletevent(event._id)
-        localStorage.removeItem('categoryid')
-        localStorage.removeItem('sponserid')
-        showAlert('success',`${event.eventName} event deleted successfully`)
-    }
+    const { event, updateEvent, index ,handledeleteEvent} = props
+
     const handleviewEvent=()=>{
         localStorage.setItem('eventdetail',event._id)
     }
@@ -67,7 +60,7 @@ const Eventitem = (props) => {
                     <div className="attendant__action d-flex gap-2">
                         <span onClick={handleviewEvent}><Link to={`/event/eventdetail`}><Eye absoluteStrokeWidth /></Link></span>
                         <span onClick={() => updateEvent(event)}><FileEdit absoluteStrokeWidth color='gray' /></span>
-                        <span onClick={handledeleteEvent}><Trash2 absoluteStrokeWidth color='red' /></span>
+                        <span onClick={()=>handledeleteEvent(event)}><Trash2 absoluteStrokeWidth color='red' /></span>
                     </div>
                 </td>
             </tr>

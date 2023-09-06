@@ -16,15 +16,17 @@ import { Home } from 'lucide-react'
 import jwtDecode from 'jwt-decode';
 import jwtEncode from 'jwt-encode'
 import SearchBar from "material-ui-search-bar";
-import Alert, { showAlert } from '../../components/alert/Alert';
+import { showAlert } from '../../components/alert/Alert';
 import HeaderTop from '../../components/top section/HeaderTop';
 const JWT_SECRET = 'Abhiisgoodb@oy'
 
 const Sponser = () => {
   const ref = useRef(null)
   const refclose = useRef(null)
+  const refdelete = useRef(null)
+  const refdeleteclose = useRef(null)
   const context = useContext(sponserValue)
-  const { sponseres, getsponser, editsponser } = context
+  const { sponseres, getsponser, editsponser, deletesponser } = context
   const [showMenu, setShowMenu] = useState(false);
   const [arrow, setarrow] = useState(false)
   const [arrowE, setarrowE] = useState(false)
@@ -40,6 +42,9 @@ const Sponser = () => {
       navigate('login')
     }
   }, [])
+  // for sorting category list descending order(to see recent event first)
+
+  sponseres.sort((a, b) => new Date(b.date) - new Date(a.date))
   useEffect(() => {
     setRow(sponseres);
   }, [sponseres]);
@@ -84,7 +89,6 @@ const Sponser = () => {
       console.log('No matching category found');
     }
     editsponser(sponser.id, sponser.ename, sponser.elogo, sponser.edetail)
-    showAlert('success', `${sponser.ename} sponser updated successfully`)
   }
   const updatesponser = (currentSponser) => {
     ref.current.click()
@@ -94,8 +98,46 @@ const Sponser = () => {
   const onchange = (e) => {
     setSponser({ ...sponser, [e.target.name]: e.target.value })
   }
-  // for image 
 
+  //delete sponser
+
+  const handleDeleteSponser = (currentSponser) => {
+    refdelete.current.click()
+    setSponser({ id: currentSponser._id, ename: currentSponser.sponserName, edetail: currentSponser.sponserDetail, elogo: currentSponser.sponserLogo })
+  }
+  const delsponser = () => {
+    refdeleteclose.current.click()
+    const spndecodedDataArray = [];
+
+    const spnData = JSON.parse(localStorage.getItem('sponserData')) || []
+    spnData.forEach(token => {
+      try {
+        const spndecodedData = jwtDecode(token);
+        spndecodedDataArray.push(spndecodedData);
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
+      }
+    });
+    const sponserdata = spndecodedDataArray.filter((val) => {
+      return val !== sponser.id
+    })
+    if (sponserdata.length > 0) {
+      const jwtData = sponserdata.map(data => jwtEncode(data, JWT_SECRET));
+      localStorage.setItem('sponserData', JSON.stringify(jwtData));
+
+    }
+    else if (sponserdata.length === 0) {
+      localStorage.removeItem("sponserData");
+    } else {
+      console.log('No matching category found');
+    }
+
+    deletesponser(sponser.id)
+    showAlert('success', `sponser deleted successfully`)
+  }
+
+  // for image 
+  
   const convertToBase64 = (e) => {
     let reader = new FileReader()
     reader.readAsDataURL(e.target.files[0])
@@ -136,6 +178,24 @@ const Sponser = () => {
     <>
       <div className="offcanvas__overlay"></div>
       <div className="offcanvas__overlay-white"></div>
+      <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Sponser</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Once a Sponser is deleted, it cannot be recovered.
+              Do you want to delete a sponser?
+            </div>
+            <div class="modal-footer">
+              <button ref={refdeleteclose} type="button" class="btn btn-secondary d-none" data-bs-dismiss="modal">Close</button>
+              <button onClick={delsponser} type="button" class="btn btn-primary">delete sponser</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg modal-dialog-centered">
           <div className="modal-content">
@@ -170,6 +230,7 @@ const Sponser = () => {
           <Header handleSidebarBtnClick={handleSidebarBtnClick} handleDropdown={handleDropdown} dropdown={dropdown} showMenu={showMenu} />
           <div className="app__slide-wrapper">
             <HeaderTop text={'Sponser List'} btnText={'Add Sponser'} style={'visible'} redirect={"/event/sponser/addsponser"} />
+            <button ref={refdelete} type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#delete"></button>
             <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
               Launch demo modal
             </button>
@@ -200,7 +261,7 @@ const Sponser = () => {
                               <TableBody>
                                 {row.length === 0 ? <TableCell>No sponser availabel please add sponser</TableCell> :
                                   row && row.slice(pg * rpg, pg * rpg + rpg).map((sponser, index) => {
-                                    return <Sponseritem showAlert={showAlert} index={index} sponser={sponser} key={sponser._id} updatesponser={updatesponser} />
+                                    return <Sponseritem showAlert={showAlert} index={index} sponser={sponser} key={sponser._id} updatesponser={updatesponser} handleDeleteSponser={handleDeleteSponser} />
                                   })}
                               </TableBody>
                             </Table>

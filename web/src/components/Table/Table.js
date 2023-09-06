@@ -1,7 +1,7 @@
 import React from 'react'
 import './table.css'
 import Tabledata from './Tabledata'
-import {Ticket,Eye,FileEdit,Trash2} from 'lucide-react'
+import {Ticket} from 'lucide-react'
 
 const rows = [
   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },

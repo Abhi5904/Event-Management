@@ -38,7 +38,6 @@ const Navbar = ({ showMenu, handleArrowClick, handleArrowEClick, arrow, arrowE }
                      <ul className="metismenu" id="menu">
                         <li>
                            <Link to="/" aria-expanded="false">
-                              {/* <i className="flaticon-home"></i> */}
                               <i><Home size={25}/></i>
                               <span className="nav-text">Dashboard</span>
                            </Link>
@@ -46,51 +45,40 @@ const Navbar = ({ showMenu, handleArrowClick, handleArrowEClick, arrow, arrowE }
                         <li>
                            <Link to="/calendar" aria-expanded="false">
                               <i><CalendarDays size={25} /></i>
-
-                              {/* <i className="flaticon-calendar-1"></i> */}
                               <span className="nav-text">Calender View</span>
                            </Link>
                         </li>
                         <li>
                            <Link to="/kyc" aria-expanded="false">
                               <i><BadgeAlert size={25} /></i>
-
-                              {/* <i className="flaticon-speaker"></i> */}
                               <span className="nav-text">KYC Verification</span>
                            </Link>
                         </li>
                         <li>
                            <Link to="/" aria-expanded="false">
                               <i><BellDot size={25} /></i>
-
-                              {/* <i className="flaticon-user-1"></i> */}
                               <span className="nav-text">Notification</span>
                            </Link>
                         </li>
                         <li className={`${arrowE ? 'mm-active' : ''}`}>
-                           <Link className="has-arrow" onClick={handleArrowEClick} aria-expanded={`${arrowE ? true : false}`}>
-                              {/* <i className="flaticon-reminder"></i> */}
+                           <Link className="has-arrow" onClick={handleArrowEClick} aria-expanded={!!arrowE}>
                               <i><CalendarCheck2 size={25} /></i>
 
                               <span className="nav-text">Event</span>
                            </Link>
-                           <ul aria-expanded="false" className={`${arrowE ? 'mm-collapse mm-show' : 'mm-collapse'}`} >
+                           <ul role="listbox" aria-expanded="false" className={`${arrowE ? 'mm-collapse mm-show' : 'mm-collapse'}`} >
                               <li><Link to="/event/category">Category</Link></li>
-                              {/* <li><Link to="/event/category/addcategory">Add Category</Link></li> */}
                               <li><Link to="/event/sponser">Sponser</Link></li>
-                              {/* <li><Link to="/event/sponser/addsponser">Add Sponser</Link></li> */}
                               <li><Link to="/event"> Event</Link></li>
-                              {/* <li ><Link to="/event/addevent">Add Event</Link></li> */}
                            </ul>
                         </li>
                         <li className={`${arrow ? 'mm-active' : ''}`}>
-                           <Link className="has-arrow" onClick={handleArrowClick} aria-expanded={`${arrow ? true : false}`}>
-                              {/* <i className="flaticon-user-1"></i> */}
+                           <Link className="has-arrow" onClick={handleArrowClick} aria-expanded={!!arrowE}>
                               <i><User size={25} /></i>
 
                               <span className="nav-text">Profile</span>
                            </Link>
-                           <ul aria-expanded="false" className={`${arrow ? 'mm-collapse mm-show' : 'mm-collapse'}`} >
+                           <ul role="listbox" aria-expanded="false" className={`${arrow ? 'mm-collapse mm-show' : 'mm-collapse'}`} >
                               <li><Link to="/profile">Profile</Link></li>
                               <li><Link to="/setting">Setting</Link></li>
                               <li><Link to="/login" onClick={handleLogout}>Logout</Link></li>
@@ -101,7 +89,6 @@ const Navbar = ({ showMenu, handleArrowClick, handleArrowEClick, arrow, arrowE }
                </div>
             </div>
          </div>
-         {/* </div> */}
          <div className={`${showMenu ? 'app__offcanvas-overlay overlay-open' : 'app__offcanvas-overlay'}`}></div>
       </>
    )

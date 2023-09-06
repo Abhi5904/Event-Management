@@ -6,11 +6,13 @@ import calendervalue from '../../context/Eventcontext'
 
 function CalendarCompo() {
   const contex =useContext(calendervalue)
-  const {getevent} = contex
+  const {getevent,calendarDate} = contex
   const [date, setDate] = useState();
-  const [selectDate,setSelectDate] = useState(null)
 
   useEffect(()=>{
+
+    // fetch event data and get event start date for calender
+
     const fetcheventdata = async()=>{
       const data = await getevent([])
       const eventDate = data.map((event)=>{
@@ -24,30 +26,17 @@ function CalendarCompo() {
         return stdate
       })
       setDate(startDate)
-      {selectDate && data.filter((event)=>{
-        if(new Date(event.eventStDate).toDateString === selectDate.toDateString){
-          return true
-        }
-      })}
     }
     fetcheventdata()
     // eslint-disable-next-line
   },[])
-  const eventShow =(date)=>{
-    setSelectDate(date)
-  }
-  console.log(selectDate)
   return (
     <>
     <div className="container-fluid h-100">
       <h1 className='text-center mt-3'>Event Calendar</h1>
       <div className='calendar-container d-flex justify-content-center my-4'>
-        <Calendar onChange={setDate} value={date} onClickDay={eventShow}/>
+        <Calendar onChange={setDate} value={date} onClickDay={calendarDate}/>
       </div>
-      {/* <p className='text-center'>
-        <span className='bold'>Selected Date:</span>{' '}
-        {date.toDateString()}
-      </p> */}
       </div>
     </>
   );

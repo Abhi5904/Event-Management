@@ -61,7 +61,7 @@ const Profile = () => {
             <div className='d-flex main p-4 shadow-lg'>
               <div className='container profile__left'>
                 <div className='img mb-5 p-4'>
-                  {user && user.image ? <img src={user.image}  className='img-fluid w-75' alt='img not found'/> : <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'className='img-fluid h-50 w-50' />}
+                  {user && user.image ? <img src={user.image}  className='img-fluid w-75' alt='img not found'/> : <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'className='img-fluid h-50 w-50 ' />}
                   <p className='imgp'>
                     <Link to="/setting"><img className="edit" src="https://i.ibb.co/vB163TR/edit.png" style={{ height: 20 + 'px', width: 20 + 'px' }} /></Link>
                   </p>

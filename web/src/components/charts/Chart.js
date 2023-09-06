@@ -11,6 +11,9 @@ import {
 } from "recharts";
 import { Users } from 'lucide-react'
 const Chart = ({ count }) => {
+
+    // fetch the user data and set data according to country 
+
     const data = [
         { name: "India", Total: count.india !== '' ? count.india : 0 },
         { name: "USA", Total: count.usa !== '' ? count.usa : 0 },
@@ -18,9 +21,6 @@ const Chart = ({ count }) => {
         { name: "Australia", Total: count.australia !== '' ? count.australia : 0 },
         { name: "Italy", Total: count.italy !== '' ? count.italy : 0 },
     ];
-    // const style= {
-    //     background:"linear-gradient(180deg, rgba(247, 66, 111, 0.13) 0%, rgba(247, 66, 111, 0) 100%)"
-    // }
     return (
         <div className="card__wrapper pb-0 shadow-lg">
             <div className="card__header">

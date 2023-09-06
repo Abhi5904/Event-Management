@@ -2,6 +2,7 @@ import { useState } from "react";
 import EventContext from "./Eventcontext";
 import jwtEncode from 'jwt-encode'
 import { showAlert } from "../components/alert/Alert";
+import { useNavigate } from "react-router-dom";
 const JWT_SECRET = 'Abhiisgoodb@oy'
 
 
@@ -15,8 +16,9 @@ const Eventstate = (props) => {
   const [categorys, setCategorys] = useState(categoryInitial)
   const [sponseres, setSponseres] = useState(sponserInitial)
   const [events, setEvents] = useState(eventInitial)
+  const navigate = useNavigate()
 
-  //user
+  // fetch all the user 
 
   const getuser = async () => {
     const response = await fetch(`${host}/api/user/getuser`, {
@@ -33,6 +35,8 @@ const Eventstate = (props) => {
       alert('error!!please login')
     }
   }
+
+  // update user's data 
 
   const updateuser = async (id, fname, lname, email, country, contactno, gender, detail, image) => {
     const response = await fetch(`${host}/api/user/updateuser/${id}`, {
@@ -79,7 +83,8 @@ const Eventstate = (props) => {
     console.log(json)
   }
 
-  // category
+  // fetch all the category
+
   const getcategory = async () => {
     const response = await fetch(`${host}/api/event/category/fetchcategory`, {
       method: "GET",
@@ -98,7 +103,6 @@ const Eventstate = (props) => {
       const catgjwtArrayString = JSON.stringify(catgjwtArray);
       localStorage.setItem('categoryData', catgjwtArrayString);
       setCategorys(json.category)
-      // console.log(categorys)
       return json.category
     }
     else {
@@ -108,6 +112,7 @@ const Eventstate = (props) => {
   }
 
   // Add a category
+
   const addcategory = async (categoryname, categorydescription) => {
     const response = await fetch(`${host}/api/event/category/addcategory`, {
       method: "POST",
@@ -121,16 +126,16 @@ const Eventstate = (props) => {
     if (json.success) {
       const category = json.category
       setCategorys(categorys.concat(category))
-      // setCategorys([category, ...categorys]);
       showAlert('success', 'Category Added Successfully!')
-      return json
+      navigate('event/category')
     }
     else {
-      showAlert('error', 'some error occured!')
+      showAlert('error', json.error)
     }
   }
 
   // update category
+
   const editcategory = async (id, categoryname, categorydescription) => {
     const response = await fetch(`${host}/api/event/category/updatecategory/${id}`, {
       method: "PUT",
@@ -140,8 +145,9 @@ const Eventstate = (props) => {
       },
       body: JSON.stringify({ categoryname, categorydescription })
     });
-    const json = response.json();
+    const json = await response.json();
     console.log(json)
+    console.log(json.category)
     let newCategory = JSON.parse(JSON.stringify(categorys))
     for (let index = 0; index < newCategory.length; index++) {
       const element = newCategory[index];
@@ -151,10 +157,17 @@ const Eventstate = (props) => {
         break
       }
     }
-    setCategorys(newCategory)
+    if (json.success) {
+      setCategorys(newCategory)
+      showAlert('success', `Category Updated Successfully`)
+    }
+    else {
+      showAlert('error', json.error)
+    }
   }
 
   // Delete a category
+
   const deletecategory = async (id) => {
     const response = await fetch(`${host}/api/event/category/deletecategory/${id}`, {
       method: "DELETE",
@@ -170,8 +183,8 @@ const Eventstate = (props) => {
   }
 
   // Sponser
+  // Fetch all the sponser
 
-  // Fetch a sponser
   const getsponser = async () => {
     const response = await fetch(`${host}/api/event/sponser/fetchsponser`, {
       method: "GET",
@@ -211,16 +224,17 @@ const Eventstate = (props) => {
     });
     const json = await response.json();
     if (json.success) {
-
       const sponser = json.sponserData
       setSponseres(sponseres.concat(sponser))
       showAlert('success', 'sponser added successfully')
+      navigate('event/sponser')
     }
     else {
-      showAlert('error', 'sponser not added successfully')
+      showAlert('error', json.error)
     }
   }
-  // Edit a Sponser
+
+  // update Sponser's data
 
   const editsponser = async (id, sponserName, sponserLogo, sponserDetail) => {
     const response = await fetch(`${host}/api/event/sponser/updatesponser/${id}`, {
@@ -231,7 +245,7 @@ const Eventstate = (props) => {
       },
       body: JSON.stringify({ sponserName, sponserDetail, sponserLogo })
     });
-    const json = response.json();
+    const json =await response.json();
     console.log(json)
     let newSponser = JSON.parse(JSON.stringify(sponseres))
     for (let index = 0; index < newSponser.length; index++) {
@@ -243,7 +257,13 @@ const Eventstate = (props) => {
         break
       }
     }
-    setSponseres(newSponser)
+    if (json.success) {
+      setSponseres(newSponser)
+      showAlert('success', `Sponser Updated Successfully`)
+    }
+    else {
+      showAlert("error", json.error)
+    }
   }
 
   // Delete a Sponser
@@ -264,7 +284,7 @@ const Eventstate = (props) => {
 
   // Event
 
-  // Fetch a Event
+  // Fetch all the Event
 
   const getevent = async () => {
     const response = await fetch(`${host}/api/event/fetchevent`, {
@@ -272,12 +292,9 @@ const Eventstate = (props) => {
       headers: {
         'Content-type': "application/json",
         "jwtData": localStorage.getItem('token'),
-        // 'categoryid': localStorage.getItem('categoryData'),
-        // 'sponserid': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcG9uc2VyIjp7ImlkIjoiNjRkMzhjZGUxMjI1N2M4ZWJhMzdjZWVjIn0sImlhdCI6MTY5MTU4NTc1OH0.whO-1BkD5aQng5xY8VhJHF_mEWIIHv-kH2puq66VVck'
       }
     })
     const json = await response.json()
-    // console.log('getevent', json)
     if (json.success) {
       setEvents(json.event)
       return json.event
@@ -302,8 +319,6 @@ const Eventstate = (props) => {
       noOfTicket: noticket,
       totalPrice: price,
     };
-    // console.log(data)
-    // console.log(decodedDataArray)
     const response = await fetch(`${host}/api/event/addevent`, {
       method: "POST",
       headers: {
@@ -316,16 +331,15 @@ const Eventstate = (props) => {
     })
 
     const json = await response.json()
-    console.log(json)
+    // console.log(json)
     if (json.success) {
       const event = json.saveEvent
-      console.log(event)
       setEvents(events.concat(json.saveEvent))
-      // setEvents([event, ...events])
       showAlert('success', 'event added successfully')
+      navigate('/event')
     }
     else {
-      showAlert('error', 'event not added successfully')
+      showAlert('error', json.error)
     }
   }
 
@@ -343,9 +357,7 @@ const Eventstate = (props) => {
       contact: contact,
       image: image,
       noOfTicket: noticket,
-      totalPrice: price,
-      // category: category,
-      // sponser: sponser,
+      totalPrice: price
     }
     const response = await fetch(`${host}/api/event/updateevent/${id}`, {
       method: "PUT",
@@ -358,7 +370,6 @@ const Eventstate = (props) => {
       body: JSON.stringify(requestBody)
     })
     const json = response.json()
-    console.log("json", json)
 
     let newEvent = JSON.parse(JSON.stringify(events))
     for (let index = 0; index < newEvent.length; index++) {
@@ -377,9 +388,13 @@ const Eventstate = (props) => {
         break
       }
     }
+    if(json.success){
     setEvents(newEvent)
-
-
+    showAlert('success','Event Updated successfully')
+    }
+    else{
+      showAlert('error',json.error)
+    }
   }
 
   // Delete a Event
@@ -390,14 +405,11 @@ const Eventstate = (props) => {
       headers: {
         'Content-type': "application/json",
         "jwtData": localStorage.getItem('token'),
-        // 'categoryid': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYXRlZ29yeSI6eyJpZCI6IjY0ZDM4YzE2MTIyNTdjOGViYTM3Y2VkYSJ9LCJpYXQiOjE2OTE1ODU1NTh9.ilemED5fWpLD2Jx1-josKAbJzsnE58tVE2beTOIoyO4",
-        // 'sponserid': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcG9uc2VyIjp7ImlkIjoiNjRkMzhjZGUxMjI1N2M4ZWJhMzdjZWVjIn0sImlhdCI6MTY5MTU4NTc1OH0.whO-1BkD5aQng5xY8VhJHF_mEWIIHv-kH2puq66VVck'
       }
     })
     const json = response.json()
     console.log(json)
     const newEvent = events.filter((event) => { return event._id !== id })
-    // console.log(events._id)
     setEvents(newEvent)
   }
 
@@ -418,8 +430,14 @@ const Eventstate = (props) => {
     console.log(json)
   }
 
+  // for calendar date
+
+  const [selectDate, setSelectDate] = useState(null)
+  const calendarDate = (date) => {
+    setSelectDate(date)
+  }
   return (
-    <EventContext.Provider value={{ users, getuser, updateuser, userImage, categorys, getcategory, addcategory, editcategory, deletecategory, sponseres, getsponser, addsponser, editsponser, deletesponser, events, getevent, addevent, editevent, deletevent, eventImage }}>
+    <EventContext.Provider value={{ navigate, selectDate, calendarDate, users, getuser, updateuser, userImage, categorys, getcategory, addcategory, editcategory, deletecategory, sponseres, getsponser, addsponser, editsponser, deletesponser, events, getevent, addevent, editevent, deletevent, eventImage }}>
       {props.children}
     </EventContext.Provider>
   )

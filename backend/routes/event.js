@@ -2,8 +2,6 @@ const express = require('express')
 const router = express.Router()
 const { body, validationResult } = require('express-validator')
 const fetchuser = require('../middleware/fetchuser')
-// const fetchcategory = require('../middleware/fetchcategory')
-// const fetchsponser = require('../middleware/fetchsponser')
 const Category = require("../model/Category")
 const Sponser = require("../model/Sponser")
 const Event = require("../model/Event")
@@ -31,12 +29,19 @@ router.get('/category/fetchcategory',fetchuser, async (req,res)=>{
 
 router.post('/category/addcategory',fetchuser,[
     // check validation here...
-    body('categoryname','category name should be 6 to 8 character').isLength({min:4})
+    body('categoryname','The category name  should be at least 4 characters long').isLength({min:4})
 ], async (req,res)=>{
     let success = false
     const errors=validationResult(req)
     if(!errors.isEmpty()){
-        return res.status(400).json({'error':errors.array()})
+        const errorMsg = errors.array().map((error)=>{
+            return error.msg
+        })
+        return res.status(400).json({'error':errorMsg[0]})
+    }
+    let category = await Category.findOne({categoryname:req.body.categoryname})
+    if(category){
+        return res.status(400).json({error:"Sorry category is already exists"})
     }
     try {
         const {categoryname,categorydescription}=req.body
@@ -52,7 +57,6 @@ router.post('/category/addcategory',fetchuser,[
         const categoryData = jwt.sign(saveCategory,JWT_SECRET)
         success = true
         res.json({success,categoryData})
-        // res.json(categoryData)
     } catch (error) {
         console.log(error.message)
         return res.status(500).json({error:"Internal server error"})
@@ -62,8 +66,18 @@ router.post('/category/addcategory',fetchuser,[
 
 //update category || Method : PUT
 
-router.put('/category/updatecategory/:id',fetchuser, async (req,res)=>{
+router.put('/category/updatecategory/:id',fetchuser,[
+    // check validation here...
+    body('categoryname','The category name should be at least 4 characters long').isLength({min:4})
+], async (req,res)=>{
     let success = false
+    const errors=validationResult(req)
+    if(!errors.isEmpty()){
+        const errorMsg = errors.array().map((error)=>{
+            return error.msg
+        })
+        return res.status(400).json({'error':errorMsg[0]})
+    }
     try {
         const {categoryname,categorydescription} = req.body
         const newCategory = {}
@@ -77,9 +91,8 @@ router.put('/category/updatecategory/:id',fetchuser, async (req,res)=>{
         if(category.user.toString() !== req.user.id){
             return res.status(401).send('Not allowed')
         }
-        success = true
         category = await Category.findByIdAndUpdate(req.params.id,{$set:newCategory},{new:true})
-        console.log(category)
+        success = true
         res.json({success,category})
     } catch (error) {
         console.log(error.message)
@@ -122,16 +135,19 @@ router.get('/sponser/fetchsponser',fetchuser, async (req,res)=>{
     }
 })
 
-// add sponser || Method : get
+// add sponser || Method : POST
 
 router.post('/sponser/addsponser',fetchuser,[
     // check validation here...
-    body('sponserName','sponser name can not be blank').exists(),
+    body('sponserName','The sponser name should be at least 4 characters long').isLength({min:4})
 ], async (req,res)=>{
     let success = false
     const errors=validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({'error':errors.array()})
+        const errorMsg = errors.array().map((error)=>{
+            return error.msg
+        })
+        return res.status(400).json({'error':errorMsg[0]})
     }
     try {
         const {sponserName,sponserLogo,sponserDetail}=req.body
@@ -155,8 +171,18 @@ router.post('/sponser/addsponser',fetchuser,[
 
 // update sponser || Method : PUT
 
-router.put('/sponser/updatesponser/:id',fetchuser, async(req,res)=>{
+router.put('/sponser/updatesponser/:id',fetchuser, [
+    // check validation here...
+    body('sponserName','The sponser name should be at least 4 characters long').isLength({min:4})
+],async(req,res)=>{
     let success = false
+    const errors=validationResult(req);
+    if (!errors.isEmpty()) {
+        const errorMsg = errors.array().map((error)=>{
+            return error.msg
+        })
+        return res.status(400).json({'error':errorMsg[0]})
+    }
     try {
         const {sponserName,sponserLogo,sponserDetail} = req.body
         const newSponser = {}
@@ -216,47 +242,58 @@ router.get('/fetchevent',fetchuser, async (req,res)=>{
     }
 })
 
-// add event || Method : POST
+// fetch user and category 
 
 router.post('/addevent',fetchuser, async (req,res,next)=>{
     const categoryid = req.header('categoryid')
     try {
-        // const category = jwt.verify(categoryid, JWT_SECRET)
-        // req.category = category.category
         req.category = categoryid
-        // console.log('hello from category')
         console.log(req.category)
         next();
     } catch (error) {
-        // console.log("error",error.message)
-        // res.status(401).send({ error: "some error occured in sponser" })
         return res.status(401).send({ error: "Please authenticate using a valid token" })
     }
 })
+
+// fetch sponser
+
 router.post('/addevent', async (req,res,next)=>{
     const sponserid = req.header('sponserid')
     try {
-        // const sponser = jwt.verify(sponserid, JWT_SECRET)
-        // req.sponser = sponser.sponser
         req.sponser = sponserid
-        // console.log('hello from sponser')
         next();
     } catch (error) {
         res.status(401).send({ error: "some error occured in sponser" })
     }
 })
+
+// add event || Method : POST
+
 router.post('/addevent',
 [
     // check validation here...
-    body('eventName','name must be 6 to 7 character').isLength({min:1}),
-    body('contact','contact number must be 10 digit').isLength({min:10,max:10})],
+    body('eventName','Event name should be at least 4 characters long').isLength({min:4}),
+    body('contact','Mobile number should contains 10 digits').isLength({min:10,max:10}),
+    // body('noOfTicket').custom(noOfTicket=>{
+    //     if(noOfTicket<=0){
+    //         return 'Enter valid Total seats'
+    //     }
+    // }),
+    // body('totalPrice',).custom(totalPrice=>{
+    //     if(totalPrice<=0){
+    //         return 'Enter valid Ticket Price'
+    //     }
+    // })
+],
      async (req,res)=>{
     const errors=validationResult(req);
     let success = false
     if (!errors.isEmpty()) {
-        console.log('validation')
-        console.log(errors.array())
-        return res.status(400).json({'error':errors.array()})
+        const errorMsg = errors.array().map((error)=>{
+            return error.msg
+        })
+        console.log(errorMsg)
+        return res.status(400).json({'error':errorMsg[0]})
     }
     try {
         const {eventName,eventDescription,eventLocation,eventStDate,eventEndDate,contact,image,noOfTicket,totalPrice} = req.body
@@ -268,19 +305,17 @@ router.post('/addevent',
         const saveEvent = await event.save()
         success = true
         res.json({success,saveEvent})
-        // console.log('hello from event')
     } catch (error) {
         console.log("error:",error.message)
         return res.status(500).json({error:"Internal server error"})
     }
 })
 
+// fetch user and category 
+
 router.put('/updateevent/:id',fetchuser,async (req,res,next)=>{
     const categoryid = req.header('categoryid')
-    // console.log("hello from the fetchcaetgory")
     try {
-        // const category = jwt.verify(categoryid, JWT_SECRET)
-        // req.category = category.category
         req.category = categoryid
         next();
     } catch (error) {
@@ -288,12 +323,12 @@ router.put('/updateevent/:id',fetchuser,async (req,res,next)=>{
         res.status(401).send({ error: "some error occured in sponser" })
     }
 })
+
+// fetch sponser 
+
 router.put('/updateevent/:id',async (req,res,next)=>{
-    // console.log('hello from the fetchsponser')
     const sponserid = req.header('sponserid')
     try {
-        // const sponser = jwt.verify(sponserid, JWT_SECRET)
-        // req.sponser = sponser.sponser
         req.sponser = sponserid
         next();
     } catch (error) {
@@ -302,8 +337,21 @@ router.put('/updateevent/:id',async (req,res,next)=>{
     }
 })
 
-router.put('/updateevent/:id', async (req,res)=>{
+// UPDATE EVENT || METHOD  : PUT
+
+router.put('/updateevent/:id',[
+    body('eventName','Event name should be at least 4 characters long').isLength({min:4}),
+    body('contact','Mobile number should contains 10 digits').isLength({min:10,max:10}),
+], async (req,res)=>{
     let success = false
+    const errors=validationResult(req);
+    if (!errors.isEmpty()) {
+        const errorMsg = errors.array().map((error)=>{
+            return error.msg
+        })
+        console.log(errorMsg)
+        return res.status(400).json({'error':errorMsg[0]})
+    }
     try {
         console.log("hello from update event")
         const {eventName,eventDescription,eventLocation,eventStDate,eventEndDate,contact,image,noOfTicket,totalPrice} = req.body
@@ -328,10 +376,9 @@ router.put('/updateevent/:id', async (req,res)=>{
             return res.status(401).send('Not allowed')
         }
         event = await Event.findByIdAndUpdate(req.params.id,{$set:newEvent},{new:true})
-        // console.log(event)
         success = true
         res.json({success,event})
-        return event
+        // return event
     } catch (error) {
         console.log(error.message)
         return res.status(500).json({error:"Internal server error in edit"})

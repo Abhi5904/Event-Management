@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../../components/navbar/Navbar';
 import Header from '../../components/header/Header';
-import { Home } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import EventDetail from '../../context/Eventcontext'
 import './singleevent.css'
 import HeaderTop from '../../components/top section/HeaderTop';
 
-function EventDetails() {
+function SingleEvent() {
     const [showMenu, setShowMenu] = useState(false);
     const [arrow, setarrow] = useState(false)
     const [arrowE, setarrowE] = useState(false)
@@ -160,4 +158,4 @@ function EventDetails() {
     )
 }
 
-export default EventDetails
+export default SingleEvent

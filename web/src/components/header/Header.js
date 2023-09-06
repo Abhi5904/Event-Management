@@ -6,6 +6,9 @@ import userdata from '../../context/Eventcontext'
 import jwtDecode from 'jwt-decode'
 import { showAlert } from '../alert/Alert'
 const Header = ({ handleSidebarBtnClick }) => {
+
+    // handle dropdown of the header 
+
     const [dropdown, setdropdown] = useState(false)
     const handleDropdown = () => {
         console.log('hello')
@@ -20,6 +23,9 @@ const Header = ({ handleSidebarBtnClick }) => {
     const context = useContext(userdata)
     const {getuser} = context
     const [user, setUser] = useState()
+
+    // fetch the user name and image and set top-right of the screen 
+
     useEffect(() => {
         const fetchuserdata = async () => {
           try {
@@ -126,123 +132,6 @@ const Header = ({ handleSidebarBtnClick }) => {
                                         </a>
                                     </div>
                                 </li>
-                                {/* <li>
-                                    <div className="nav-item p-relative">
-                                        <a id="notifydropdown" onClick={handleDropdown}>
-                                            <div className="notification__icon">
-                                                <Mail absoluteStrokeWidth />
-                                            </div>
-                                        </a>
-                                        <div className="notification__dropdown">
-                                            <div className="notification__card card__scroll">
-                                                <div className="notification__header">
-                                                    <div className="notification__inner">
-                                                        <h5>Notifications</h5>
-                                                        <span>(10)</span>
-                                                    </div>
-                                                </div>
-                                                <div className="notification__item">
-                                                    <div className="notification__thumb">
-                                                        <a href="profile.html"><img src="assets/img/meta/chatbox/01.png" alt="image not found" /></a>
-                                                    </div>
-                                                    <div className="notification__content">
-                                                        <p>Mark your calendar for BITPA
-                                                            Conference Dhaka Meet up 2023</p>
-                                                        <div className="notification__time">
-                                                            <span>2h ago</span>
-                                                            <span className="status">Graphic Design</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="notification__item">
-                                                    <div className="notification__thumb">
-                                                        <a href="profile.html"><img src="assets/img/meta/chatbox/02.png" alt="image not found" /></a>
-                                                    </div>
-                                                    <div className="notification__content">
-                                                        <p>Get ready for today’s Business Conference Tokyo Meet up - 2023!</p>
-                                                        <div className="notification__time">
-                                                            <span>2h ago</span>
-                                                            <span className="status">Graphic Design</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="notification__item">
-                                                    <div className="notification__thumb">
-                                                        <a href="profile.html"><img src="assets/img/meta/chatbox/03.png" alt="image not found" /></a>
-                                                    </div>
-                                                    <div className="notification__content">
-                                                        <p>You don’t want to miss Digital Innovation Meet up!</p>
-                                                        <div className="notification__time">
-                                                            <span>2h ago</span>
-                                                            <span className="status">Graphic Design</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="notification__item">
-                                                    <div className="notification__thumb">
-                                                        <a href="profile.html"><img src="assets/img/meta/chatbox/04.png" alt="image not found" /></a>
-                                                    </div>
-                                                    <div className="notification__content">
-                                                        <p>Digital Innovation Meet up Canada - 2023 starts in 5 minutes!</p>
-                                                        <div className="notification__time">
-                                                            <span>2h ago</span>
-                                                            <span className="status">Graphic Design</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="notification__item">
-                                                    <div className="notification__thumb">
-                                                        <a href="profile.html"><img src="assets/img/meta/chatbox/05.png" alt="image not found" /></a>
-                                                    </div>
-                                                    <div className="notification__content">
-                                                        <p>Mark your calendar for BITPA
-                                                            Conference Dhaka Meet up 2023</p>
-                                                        <div className="notification__time">
-                                                            <span>2h ago</span>
-                                                            <span className="status">Graphic Design</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="notification__item">
-                                                    <div className="notification__thumb">
-                                                        <a href="profile.html"><img src="assets/img/meta/chatbox/06.png" alt="image not found" /></a>
-                                                    </div>
-                                                    <div className="notification__content">
-                                                        <p>You don’t want to miss Digital Innovation Meet up!</p>
-                                                        <div className="notification__time">
-                                                            <span>2h ago</span>
-                                                            <span className="status">Graphic Design</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="notification__item">
-                                                    <div className="notification__thumb">
-                                                        <a href="profile.html"><img src="assets/img/meta/chatbox/07.png" alt="image not found" /></a>
-                                                    </div>
-                                                    <div className="notification__content">
-                                                        <p>Digital Innovation Meet up Canada - 2023 starts in 5 minutes!</p>
-                                                        <div className="notification__time">
-                                                            <span>2h ago</span>
-                                                            <span className="status">Graphic Design</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="notification__item">
-                                                    <div className="notification__thumb">
-                                                        <a href="profile.html"><img src="assets/img/meta/chatbox/08.png" alt="image not found" /></a>
-                                                    </div>
-                                                    <div className="notification__content">
-                                                        <p>Meet the speakers at Cyber Security Conference Meet up Japan!</p>
-                                                        <div className="notification__time">
-                                                            <span>2h ago</span>
-                                                            <span className="status">Graphic Design</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li> */}
                             </ul>
                         </div>
                         <div className="nav-item p-relative">

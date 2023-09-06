@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Home from "../pages/home/Home"
 import Login from "../pages/authentication/Login"
 import Signup from "../pages/authentication/Signup"
@@ -21,9 +21,9 @@ import './organiser.css'
 const Organiser = () => {
     return (
         <>
-            <Eventstate>
-                <Router>
-                    <Alert/>
+            <Router>
+                <Eventstate>
+                    <Alert />
                     <Routes>
                         <Route path="/">
                             <Route index element={<Home />} />
@@ -33,14 +33,14 @@ const Organiser = () => {
                             <Route path="profile" element={<Profile />} />
                             <Route path="login" element={<Login />} />
                             <Route path="signup" element={<Signup />} />
-                            <Route path='setting' element={<Setting/>}/>
+                            <Route path='setting' element={<Setting />} />
                         </Route>
                         <Route path="event">
                             <Route index element={<Event />} />
                             <Route path="addevent" element={<Addevent />} />
                             <Route path='eventdetail' element={<SingleEvent />} />
                             <Route path="category"  >
-                                <Route index element={<Category />}/>
+                                <Route index element={<Category />} />
                                 <Route path="addcategory" element={<Addcategory />} />
                             </Route>
                             <Route path="sponser" >
@@ -49,8 +49,8 @@ const Organiser = () => {
                             </Route>
                         </Route>
                     </Routes>
-                </Router>
-            </Eventstate>
+                </Eventstate>
+            </Router>
         </>
     )
 }

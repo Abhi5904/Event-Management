@@ -1,12 +1,15 @@
-import React, { useContext, useState,useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Navbar from '../../components/navbar/Navbar';
 import Header from '../../components/header/Header';
 import '../event/addevent.css'
 import categoryValue from '../../context/Eventcontext'
-import  Alert from '../../components/alert/Alert';
+import Alert, { showAlert } from '../../components/alert/Alert';
 import HeaderTop from '../../components/top section/HeaderTop';
+import { json, useNavigate } from 'react-router-dom';
 
 const Addcategory = () => {
+
+  // handle dropdown of header and navbar 
 
   const [showMenu, setShowMenu] = useState(false);
   const [arrow, setarrow] = useState(false)
@@ -14,8 +17,10 @@ const Addcategory = () => {
   const [dropdown, setdropdown] = useState(false)
 
   const context = useContext(categoryValue)
-  const { addcategory,getcategory} = context
+  const { addcategory, getcategory } = context
   const [category, setCategory] = useState({ title: '', detail: '' })
+  let navigate = useNavigate()
+
   const handleArrowClick = () => {
     setarrow((prevArrow) => !prevArrow);
   };
@@ -34,11 +39,15 @@ const Addcategory = () => {
     getcategory();
     // eslint-disable-next-line
   }, [])
+
   const handleClick = (e) => {
     e.preventDefault()
+    if (!category.title) {
+      showAlert('error', 'Please fill out all fields.');
+      return;
+    }
     addcategory(category.title, category.detail)
-    setCategory({ title: e.target.title, detail: e.target.detail })
-    // showAlert('success','category add successfully')
+    // setCategory({ title: e.target.title, detail: e.target.detail })
     setCategory({ title: '', detail: '' })
   }
   const onchange = (e) => {
@@ -47,7 +56,7 @@ const Addcategory = () => {
 
   return (
     <>
-    <Alert/>
+      <Alert />
       <div className="offcanvas__overlay"></div>
       <div className="offcanvas__overlay-white"></div>
       <div className="page__full-wrapper">
@@ -55,7 +64,7 @@ const Addcategory = () => {
         <div className='page__body-wrapper'>
           <Header handleSidebarBtnClick={handleSidebarBtnClick} handleDropdown={handleDropdown} dropdown={dropdown} showMenu={showMenu} />
           <div className="app__slide-wrapper">
-            <HeaderTop text={'Add Category'} style={'invisible'}/>
+            <HeaderTop text={'Add Category'} style={'invisible'} />
             <div className="row">
               <div className="col-xxl-12">
                 <div className="create__event-area shadow-lg my-3">

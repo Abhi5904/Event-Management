@@ -5,6 +5,7 @@ import eventValue from '../../context/Eventcontext'
 import './addevent.css'
 import jwtDecode from 'jwt-decode';
 import HeaderTop from '../../components/top section/HeaderTop';
+import { showAlert } from '../../components/alert/Alert';
 
 const Addevent = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -55,6 +56,10 @@ const Addevent = () => {
   }, []);
   const handleClick = async (e) => {
     e.preventDefault()
+    if (!event.name || !event.detail || !event.location || !event.stdate || !event.endate || !event.contact || !event.image || !event.noticket || !event.price || !event.category || !event.sponser) {
+      showAlert('error', 'Please fill out all fields.');
+      return;
+    }
     const catgData = JSON.parse(localStorage.getItem('categoryData')) || []
     const catgdecodedDataArray = [];
 
@@ -66,11 +71,9 @@ const Addevent = () => {
         console.error('Error decoding JWT:', error);
       }
     });
-    console.log(catgdecodedDataArray)
     const categorydata = catgdecodedDataArray.filter((val) => {
       return val === event.category
     })
-    console.log(categorydata)
     if (categorydata.length > 0) {
       localStorage.setItem('categoryid', categorydata);
     } else {
@@ -98,7 +101,7 @@ const Addevent = () => {
     }
     addevent(event.name, event.detail, event.location, event.stdate, event.endate, event.contact, event.image, event.noticket, event.price)
     // setEvent({ name: e.target.name, detail: e.target.detail, location: e.target.location, stdate: e.target.stdate, endate: e.target.endate, contact: e.target.contact,noticket: e.target.noticket, price: e.target.price, category: e.target.category, sponser: e.target.sponser })
-    setEvent({ name: '', detail: '', location: '', stdate: '', endate: '', contact: '', image: '', noticket: '', price: '', category: '', sponser: '' })
+    // setEvent({ name: '', detail: '', location: '', stdate: '', endate: '', contact: '', image: '', noticket: '', price: '', category: '', sponser: '' })
   }
 
   const onchange = (e) => {
@@ -118,21 +121,7 @@ const Addevent = () => {
 
   // start date and End date
   const today = new Date().toISOString().split('T')[0];
-  // const endDate = new Date(event.stdate).toISOString().split('T')[0]
-  // const [checkInDate, setCheckInDate] = useState(today);
-  // const [checkOutDate, setCheckOutDate] = useState("");
 
-  // const handleCheckInChange = (event) => {
-  //   // console.log(event.target.value)
-  //   const newCheckInDate = event.target.value;
-  //   // setCheckInDate(newCheckInDate);
-  //   setEvent({...event,stdate:newCheckInDate})
-  // };
-
-  // const handleCheckOutChange = (event) => {
-  //   // setCheckOutDate(event.target.value);
-  //   setEvent({...event,endate:event.target.value})
-  // };
   return (
     <>
       <div className="offcanvas__overlay"></div>
@@ -219,13 +208,13 @@ const Addevent = () => {
                               <div className="col-xxl-6 col-xl-6 col-lg-6">
                                 <div className="singel__input-field mb-5">
                                   <label htmlFor='noticket' className="input__field-text">Total Seat</label>
-                                  <input name='noticket' value={event.noticket} placeholder='Enter Total seat' onChange={onchange} type="tel" />
+                                  <input name='noticket' value={event.noticket} placeholder='Enter Total seat' onChange={onchange} type="number" />
                                 </div>
                               </div>
                               <div className="col-xxl-6 col-xl-6 col-lg-6">
                                 <div className="singel__input-field">
                                   <label htmlFor='price' className="input__field-text">Ticket Price</label>
-                                  <input name='price' onChange={onchange} type="text" placeholder='Enter Ticket Price' value={event.price} />
+                                  <input name='price' onChange={onchange} type="number" placeholder='Enter Ticket Price' value={event.price} />
                                 </div>
                               </div>
                               <div className="col-xxl-6 col-xl-6 col-lg-6">
@@ -246,7 +235,7 @@ const Addevent = () => {
                             </div> */}
                             <div className="singel__input-field mb-5">
                               <label htmlFor='contact' className="input__field-text">Phone Number</label>
-                              <input name='contact' value={event.contact} placeholder='Enter Phone Number' onChange={onchange} type="text" />
+                              <input name='contact' value={event.contact} placeholder='Enter Phone Number' onChange={onchange} type="number" />
                             </div>
                             <button className="input__btn w-100" type="submit" onClick={handleClick}>Create Event</button>
                           </div>

@@ -9,6 +9,14 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (!formdata.name || !formdata.email || !formdata.password || !formdata.country || !formdata.contactno || !formdata.role) {
+      showAlert('error', 'Please fill out all fields.');
+      return;
+    }
+
+    // create user 
+
     const response = await fetch("http://localhost:5000/api/user/createuser", {
       method: "POST",
       headers: {
@@ -24,8 +32,8 @@ const Signup = () => {
         showAlert('success','Account Created Successfully')
     }
     else {
-      setFormdata({ name: '', email: '', password: '', country: '', contactno: '', role: '' })
-      showAlert('error','Invalid Details')
+      // setFormdata({ name: '', email: '', password: '', country: '', contactno: '', role: '' })
+      showAlert('error',json.error)
     }
 
   }
@@ -69,7 +77,7 @@ const Signup = () => {
                   </div>
                   <div className="contact__select country mb-4">
                     <span style={{position: 'absolute',top: '14px',insetInlineStart: '20px',zIndex:'1'}}><Globe  /></span>
-                    <select onChange={onchange} value={formdata.country} name='country' className='border-white' id='country' style={{color:'#000',width:'100%;',height: '60px',paddingInlineStart: '50px',paddingInlineEnd: '20px'}}>
+                    <select onChange={onchange} value={formdata.country} name='country' className='border-white' id='country' style={{color:'#000',width:'100%',height: '60px',paddingInlineStart: '50px',paddingInlineEnd: '20px'}}>
                       <option>Select the country</option>
                       <option value={'India(+91)'}>India(+91)</option>
                       <option value={'UK(+44)'}>UK(+44)</option>

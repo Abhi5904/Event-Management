@@ -9,6 +9,13 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (!formdata.email || !formdata.password ) {
+      showAlert('error', 'Please fill out all fields.');
+      return;
+    }
+    // login access for user 
+    
     const response = await fetch('http://localhost:5000/api/user/login', {
       method: "POST",
       headers: {
@@ -25,7 +32,7 @@ const Login = () => {
     }
     else {
       setFormdata({email: '', password: '' }); 
-      showAlert('error', 'Invalid Credentials')
+      showAlert('error', json.error)
     }
   }
   const onchange = (e) => {

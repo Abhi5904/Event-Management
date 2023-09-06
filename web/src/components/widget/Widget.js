@@ -10,7 +10,6 @@ const Widget = ({ widgetname, icon,count }) => {
         <span className="expovent__count-text">{widgetname}</span>
       </div>
       <div className="expovent__count-icon">
-
       <i>{icon}</i>
       </div>
     </div>

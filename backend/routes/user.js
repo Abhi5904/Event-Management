@@ -9,16 +9,25 @@ const fetchuser = require('../middleware/fetchuser')
 const JWT_SECRET = 'Abhiisgoodb@oy'
 
 //create a user ||method:POST
+
 router.post('/createuser',[
     // check validation here...
     body('email','Enter valid email').isEmail(),
-    body('password','Enter valid password').isLength({min:8,max:12}),
-    body('contactno','Enter valid phone number').isLength({min:10,max:10})
+    body('password','The password should be at least 8 characters long.The password should contain at least one uppercase letter, one lowercase letter, and one number, and one symbol.').isStrongPassword({
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,}),
+    body('contactno','Mobile number should contains 10 digits').isLength({ min: 10, max: 10 })
 ], async (req,res)=>{
     const error = validationResult(req)
     let success = false
     if(!error.isEmpty()){
-        return res.status(400).json({errors: error.array() })
+        const errorMsg = error.array().map((error)=>{
+            return error.msg
+        })
+        return res.status(400).json({error: errorMsg[0]})
     }
 
     const salt = await bcrypt.genSalt(10)
@@ -26,7 +35,7 @@ router.post('/createuser',[
     try{
         let user = await User.findOne({email:req.body.email})
         if(user){
-            res.status(400).json({error:"Sorry email is already exists"})
+            return res.status(400).json({error:"Sorry email is already exists"})
         }
 
         user = await User.create({
@@ -46,14 +55,15 @@ router.post('/createuser',[
         const jwtData = jwt.sign(data,JWT_SECRET)
         success = true
         res.json({success,jwtData})
+        return jwtData
     }catch(error){
         console.log(error.message)
-        res.status(500).send('Internal Server Error')
+        return res.status(500).send('Internal Server Error')
     }
-    // res.send()
 })
 
 //user login ||method:POST
+
 router.post('/login',[
     // check validation here...
     body('email','Enter a valid email').isEmail(),
@@ -68,11 +78,11 @@ async (req,res)=>{
     try{
         let user = await User.findOne({email:req.body.email})
         if(!user){
-            return res.status(400).json({error:"Sorry email is not found. You want to login?"})
+            return res.status(400).json({error:"Invalid Credentials"})
         }
         let passwordCompare = await bcrypt.compare(req.body.password, user.password)
         if(!passwordCompare){
-            return res.status(400).json({error:"Sorry password is invalid"})
+            return res.status(400).json({error:"Invalid Credentials"})
         }
         data = {
             user:{
@@ -89,6 +99,8 @@ async (req,res)=>{
     }
 })
 
+// update user profile || method : PUT 
+
 router.put('/updateuser/:id',fetchuser,async(req,res)=>{
     try {
         const {fname,lname,email,country,contactno,gender,detail,image} = req.body
@@ -101,7 +113,6 @@ router.put('/updateuser/:id',fetchuser,async(req,res)=>{
         if(gender){newProfile.gender = gender}
         if(detail){newProfile.detail=detail}
         if(image){newProfile.image = image}
-        console.log(newProfile.image)
         let user = await User.findById(req.params.id)
         if(!user){
             return res.status(404).send("Not found")
@@ -114,11 +125,11 @@ router.put('/updateuser/:id',fetchuser,async(req,res)=>{
     }
 })
 
-//get user details ||method:GET
+//get user details || method:GET
+
 router.get("/getuser",async (req,res)=>{
     let success = false
     try {
-        // let userId = req.user.id
         const user = await User.find().select('-password')
         success = true
         res.send({success,user})
@@ -129,6 +140,8 @@ router.get("/getuser",async (req,res)=>{
     }
 
 })
+
+// set user profile image 
 
 router.post('/uploadimage/:id',fetchuser,async(req,res)=>{
     const {base64} = req.body

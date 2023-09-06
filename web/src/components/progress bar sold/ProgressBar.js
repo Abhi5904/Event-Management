@@ -1,11 +1,4 @@
 import React from 'react'
-// import { Progress } from 'react-circle-progress-bar_no-css'
-// import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-// import LinearGradient from 'react-native-linear-gradient'
-// import 'react-circular-progressbar/dist/styles.css';
-// import {CircularGradientProgress} from 'react-circular-gradient-progress';
-// import CircularGradientProgress from 'react-circular-gradient-progress/lib/GradiantCircularProgress';
-// import 'react-circular-progressbar/dist/styles.css'
 import Svg from './Svg'
 import { CircularProgressbar } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css'

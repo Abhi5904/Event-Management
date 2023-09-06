@@ -33,9 +33,12 @@ const Addsponser = () => {
   };
   const handleClick = (e)=>{
     e.preventDefault()
+    if(!sponser.name || !sponser.logo){
+      showAlert('error','Please fill out all fields.')
+      return
+    }
     addsponser(sponser.name,sponser.detail,sponser.logo)
-    setSponser({name:e.target.name,detail:e.target.detail,logo:e.target.logo})
-    // showAlert('success','sponser added successfully')
+    // setSponser({name:e.target.name,detail:e.target.detail,logo:e.target.logo})
     setSponser({name:'',detail:'',logo:''})
   }
   const onchange = (e)=>{

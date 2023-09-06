@@ -5,7 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const Alert = () => {
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer 
+      limit={1}/>
     </div>
   );
 }
