@@ -296,9 +296,9 @@ display: flex;
     /* color: #111111; */
     margin-bottom: 10px;
 }
-input,button,optgroup,select,textarea{
+/* input,button,optgroup,select,textarea{
     font-size: 1.2rem;
-}
+} */
 .input__number-lang {
     display: grid;
     grid-template-columns: 280px auto;

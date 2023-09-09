@@ -5,7 +5,6 @@ import '../event/addevent.css'
 import categoryValue from '../../context/Eventcontext'
 import Alert, { showAlert } from '../../components/alert/Alert';
 import HeaderTop from '../../components/top section/HeaderTop';
-import { json, useNavigate } from 'react-router-dom';
 
 const Addcategory = () => {
 
@@ -19,7 +18,6 @@ const Addcategory = () => {
   const context = useContext(categoryValue)
   const { addcategory, getcategory } = context
   const [category, setCategory] = useState({ title: '', detail: '' })
-  let navigate = useNavigate()
 
   const handleArrowClick = () => {
     setarrow((prevArrow) => !prevArrow);
@@ -46,6 +44,12 @@ const Addcategory = () => {
       showAlert('error', 'Please fill out all fields.');
       return;
     }
+
+    const regex = /^\S*$/;
+    if(!regex.test(category.title) || !regex.test(category.detail)){
+      showAlert("error", "Input field can not be blank.");
+    }
+
     addcategory(category.title, category.detail)
     // setCategory({ title: e.target.title, detail: e.target.detail })
     setCategory({ title: '', detail: '' })

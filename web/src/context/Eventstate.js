@@ -45,9 +45,9 @@ const Eventstate = (props) => {
         "Content-Type": "application/json",
         "jwtData": localStorage.getItem('token')
       },
-      body: JSON.stringify({ fname, lname, email, country, contactno, gender, detail })
+      body: JSON.stringify({ fname, lname, email, country, contactno, gender, detail, image })
     })
-    const json = response.json()
+    const json = await response.json()
     console.log(json)
     let newuser = JSON.parse(JSON.stringify(users))
     for (let index = 0; index < newuser.length; index++) {
@@ -60,27 +60,18 @@ const Eventstate = (props) => {
         element.contactno = contactno
         element.gender = gender
         element.detail = detail
+        element.image = image
         break
       }
     }
-    setUsers(newuser)
-  }
-
-  // upload user image 
-
-  const userImage = async (id, image) => {
-    const response = await fetch(`http://localhost:5000/api/user/uploadimage/${id}`, {
-      method: 'POST',
-      headers: {
-        'Content-type': "application/json",
-        "jwtData": localStorage.getItem('token'),
-      },
-      body: JSON.stringify({
-        base64: image
-      })
-    })
-    const json = response.json()
-    console.log(json)
+    if (json.success) {
+      console.log('hello')
+      setUsers(newuser)
+      navigate('/profile')
+      showAlert('success', 'Profile updated successfully')
+    } else {
+      showAlert('error', json.error)
+    }
   }
 
   // fetch all the category
@@ -245,7 +236,7 @@ const Eventstate = (props) => {
       },
       body: JSON.stringify({ sponserName, sponserDetail, sponserLogo })
     });
-    const json =await response.json();
+    const json = await response.json();
     console.log(json)
     let newSponser = JSON.parse(JSON.stringify(sponseres))
     for (let index = 0; index < newSponser.length; index++) {
@@ -300,7 +291,7 @@ const Eventstate = (props) => {
       return json.event
     }
     else {
-      showAlert('error', 'event not fetch successfully')
+      showAlert('error', 'please login')
     }
   }
 
@@ -388,12 +379,12 @@ const Eventstate = (props) => {
         break
       }
     }
-    if(json.success){
-    setEvents(newEvent)
-    showAlert('success','Event Updated successfully')
+    if (json.success) {
+      setEvents(newEvent)
+      showAlert('success', 'Event Updated successfully')
     }
-    else{
-      showAlert('error',json.error)
+    else {
+      showAlert('error', json.error)
     }
   }
 
@@ -437,7 +428,7 @@ const Eventstate = (props) => {
     setSelectDate(date)
   }
   return (
-    <EventContext.Provider value={{ navigate, selectDate, calendarDate, users, getuser, updateuser, userImage, categorys, getcategory, addcategory, editcategory, deletecategory, sponseres, getsponser, addsponser, editsponser, deletesponser, events, getevent, addevent, editevent, deletevent, eventImage }}>
+    <EventContext.Provider value={{ navigate, selectDate, calendarDate, users, getuser, updateuser, categorys, getcategory, addcategory, editcategory, deletecategory, sponseres, getsponser, addsponser, editsponser, deletesponser, events, getevent, addevent, editevent, deletevent, eventImage }}>
       {props.children}
     </EventContext.Provider>
   )

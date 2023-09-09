@@ -1,8 +1,10 @@
+import User from "./User/User";
 import Organiser from "./event organiser/Organiser";
 function App() {
   return (
     <>
-      <Organiser />
+    <User/>
+      {/* <Organiser /> */}
     </>
   );
 }

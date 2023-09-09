@@ -63,6 +63,12 @@ const Sponser = () => {
   };
   const handleClick = () => {
     refclose.current.click()
+
+    const regex = /^\S*$/;
+    if(!regex.test(sponser.ename) || !regex.test(sponser.edetail)){
+      showAlert("error", "Input field can not be blank.");
+    }
+
     const spndecodedDataArray = [];
 
     const spnData = JSON.parse(localStorage.getItem('sponserData')) || []

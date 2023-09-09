@@ -73,7 +73,10 @@ async (req,res)=>{
     let success = false
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        const errorMsg = error.array().map((error)=>{
+            return error.msg
+        })
+        return res.status(400).json({error: errorMsg[0]})
     };
     try{
         let user = await User.findOne({email:req.body.email})
@@ -101,7 +104,18 @@ async (req,res)=>{
 
 // update user profile || method : PUT 
 
-router.put('/updateuser/:id',fetchuser,async(req,res)=>{
+router.put('/updateuser/:id',fetchuser,[
+    body('email','Enter valid email').isEmail(),
+    body('contactno','Mobile number should contains 10 digits').isLength({ min: 10, max: 10 })
+],async(req,res)=>{
+    let success = false
+    const error = validationResult(req)
+    if(!error.isEmpty()){
+        const errorMsg = error.array().map((error)=>{
+            return error.msg
+        })
+        return res.status(400).json({error: errorMsg[0]})
+    }
     try {
         const {fname,lname,email,country,contactno,gender,detail,image} = req.body
         const newProfile = {}
@@ -118,7 +132,8 @@ router.put('/updateuser/:id',fetchuser,async(req,res)=>{
             return res.status(404).send("Not found")
         }
         user = await User.findByIdAndUpdate(req.params.id,{$set:newProfile})
-        res.json(user)
+        success = true
+        res.json({success,user})
     } catch (error) {
         console.log(error.message)
         res.status(500).send('Internal Server Error')
@@ -141,16 +156,4 @@ router.get("/getuser",async (req,res)=>{
 
 })
 
-// set user profile image 
-
-router.post('/uploadimage/:id',fetchuser,async(req,res)=>{
-    const {base64} = req.body
-    try {
-        const image = await User.findByIdAndUpdate(req.params.id,{image:base64})
-        res.send(image)
-    } catch (error) {
-        console.log(error.message)
-        res.status(500).send('Internal Server Error')
-    }
-})
 module.exports = router

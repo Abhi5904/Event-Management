@@ -69,6 +69,12 @@ const Category = () => {
 
   const handleClick = () => {
     refclose.current.click()
+
+    const regex = /^\S*$/;
+    if(!regex.test(catgory.etitle) || !regex.test(catgory.edetail)){
+      showAlert("error", "Input field can not be blank.");
+    }
+
     const catgdecodedDataArray = [];
 
     const catgData = JSON.parse(localStorage.getItem('categoryData')) || []

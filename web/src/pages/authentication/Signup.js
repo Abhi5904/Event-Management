@@ -15,6 +15,11 @@ const Signup = () => {
       return;
     }
 
+    const regex = /^\S*$/;
+    if(!regex.test(formdata.name) || !regex.test(formdata.email) || !regex.test(formdata.password) || !regex.test(formdata.country) || !regex.test(formdata.contactno) || !regex.test(formdata.role)){
+      showAlert("error", "Input field can not be blank.");
+    }
+
     // create user 
 
     const response = await fetch("http://localhost:5000/api/user/createuser", {
@@ -90,10 +95,18 @@ const Signup = () => {
                     <input type="tel" name='contactno' value={formdata.contactno} onChange={onchange} placeholder="Enter Phone Number" />
                     <span><Contact /></span>
                   </div>
-                  <div className="sign__input">
+                  <div className="contact__select country mb-4">
+                    <span style={{position: 'absolute',top: '14px',insetInlineStart: '20px',zIndex:'1'}}><User/></span>
+                    <select onChange={onchange} value={formdata.role} name='role' className='border-white' id='country' style={{color:'#000',width:'100%',height: '60px',paddingInlineStart: '50px',paddingInlineEnd: '20px'}}>
+                      <option>Select the Role</option>
+                      <option value={'user'}>User</option>
+                      <option value={'organizer'}>Organizer</option>
+                    </select>
+                  </div>
+                  {/* <div className="sign__input">
                     <input type="text" name='role' onChange={onchange} value={formdata.role} placeholder="Enter Role" />
                     <span><User/></span>
-                  </div>
+                  </div> */}
                   <div className="sing__button mb-20">
                     <button className="input__btn w-100 mb-20" type="submit">Sign Up</button>
                   </div>

@@ -60,6 +60,12 @@ const Addevent = () => {
       showAlert('error', 'Please fill out all fields.');
       return;
     }
+
+    const regex = /^\S*$/;
+    if(!regex.test(event.name) || !regex.test(event.detail) || !regex.test(event.location) || !regex.test(event.contact)){
+      showAlert("error", "Input field can not be blank.");
+    }
+
     const catgData = JSON.parse(localStorage.getItem('categoryData')) || []
     const catgdecodedDataArray = [];
 

@@ -112,6 +112,12 @@ const Event = () => {
   }
   const handleClick = () => {
     refclose.current.click()
+
+    const regex = /^\S*$/;
+    if(!regex.test(event.ename) || !regex.test(event.edetail) || !regex.test(event.elocation) || !regex.test(event.econtact)){
+      showAlert("error", "Input field can not be blank.");
+    }
+
     const categorydata = catgdecodedDataArray.filter((val) => {
       return val === event.ecategory
     })

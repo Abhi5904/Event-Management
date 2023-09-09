@@ -14,6 +14,11 @@ const Login = () => {
       showAlert('error', 'Please fill out all fields.');
       return;
     }
+
+    const regex = /^\S*$/;
+    if(!regex.test(formdata.email) || !regex.test(formdata.password)){
+      showAlert("error", "Input field can not be blank.");
+    }
     // login access for user 
     
     const response = await fetch('http://localhost:5000/api/user/login', {

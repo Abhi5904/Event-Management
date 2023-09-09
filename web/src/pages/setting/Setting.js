@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import Navbar from '../../components/navbar/Navbar'
 import Header from '../../components/header/Header'
-import { Home } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import setting from '../../context/Eventcontext'
 import jwtDecode from 'jwt-decode'
 import { showAlert } from '../../components/alert/Alert'
@@ -31,6 +30,7 @@ const Setting = () => {
     const context = useContext(setting)
     const { getuser, updateuser, userImage} = context
     const [user, setUser] = useState()
+    // setUser()
     let navigate = useNavigate()
     useEffect(() => {
         const fetchuserdata = async () => {
@@ -51,9 +51,20 @@ const Setting = () => {
     // console.log(user)
     const handleClick = async (e) => {
         e.preventDefault()
-        userImage(user._id,user.image)
+
+        if(!user.fname || !user.lname || !user.email || !user.country || !user.contactno || !user.gender || !user.detail || !user.image){
+            showAlert('error','Please fill out all fields.')
+            return
+        }      
+
+        const regex = /^\S*$/
+        if(!regex.test(user.fname) || !regex.test(user.lname) || !regex.test(user.email) || !regex.test(user.contactno) || !regex.test(user.detail)){
+            showAlert('error','Input Field can not be blank')
+            return 
+        }
+        console.log(user.image)
+        // userImage(user._id,user.image)
         updateuser(user._id, user.fname, user.lname, user.email, user.country, user.contactno, user.gender, user.detail, user.image)
-        showAlert('success', 'Profile updated successfully')
     }
     const onchange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value })
@@ -94,15 +105,15 @@ const Setting = () => {
                                             <div className="create__event-main pt-25 row-gap-4">
                                                 <div className="singel__input-field ">
                                                     <label htmlFor='fname' className="input__field-text">First Name</label>
-                                                    <input type="text" name='fname' onChange={onchange} placeholder={`${user.fname ? user.fname : 'Enter your first name'}`} />
+                                                    <input type="text" name='fname' value={user.fname && user.fname} onChange={onchange} placeholder='Enter your first name' />
                                                 </div>
                                                 <div className="singel__input-field ">
                                                     <label htmlFor='lname' className="input__field-text">Last Name</label>
-                                                    <input name='lname' onChange={onchange} type="text" placeholder={`${user.lname ? user.lname : 'Enter your last name'}`} />
+                                                    <input name='lname' onChange={onchange} value={user.lname && user.lname} type="text" placeholder='Enter your last name'/>
                                                 </div>
                                                 <div className="singel__input-field ">
                                                     <label htmlFor='email' className="input__field-text">Email</label>
-                                                    <input name='email' onChange={onchange} type="email" placeholder={`${user.email ? user.email : 'Enter your mail'}`} />
+                                                    <input name='email' onChange={onchange} value={user.email && user.email} type="email" placeholder= 'Enter your mail'/>
                                                 </div>
                                                 <div className="singel__input-field ">
                                                     <label htmlFor='contact' className="input__field-text">Contact Number</label>
@@ -110,7 +121,7 @@ const Setting = () => {
                                                         <div className="singel__input-field mb-15">
                                                             <div className="input__number-lang">
                                                                 <div className="contact__select">
-                                                                    <select onChange={onchange} name='country'>
+                                                                    <select onChange={onchange} value={user.country && user.country} name='country'>
                                                                         <option>Select the country</option>
                                                                         <option value={'India(+91)'}>India(+91)</option>
                                                                         <option value={'UK(+44)'}>UK(+44)</option>
@@ -120,7 +131,7 @@ const Setting = () => {
                                                                     </select>
                                                                 </div>
                                                                 <div className="input__tel">
-                                                                    <input name='contactno' onChange={onchange} type="tel" placeholder={`${user.contactno ? user.contactno : 'Enter your number'}`} />
+                                                                    <input name='contactno' onChange={onchange} value={user.contactno && user.contactno} type="tel" placeholder='Enter your number'/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -129,7 +140,7 @@ const Setting = () => {
                                                 <div className="singel__input-field ">
                                                     <label htmlFor='contact' className="input__field-text">Gender</label>
                                                     <div className="contact__select">
-                                                        <select onChange={onchange} name='gender'>
+                                                        <select onChange={onchange} value={user.gender && user.gender} name='gender'>
                                                             <option>select the gender</option>
                                                             <option value={'Male'}>Male</option>
                                                             <option value={'Female'}>Female</option>
@@ -139,11 +150,11 @@ const Setting = () => {
                                                 </div>
                                                 <div className="event__input">
                                                     <label htmlFor='detail' className="input__field-text">About Your Self</label>
-                                                    <textarea name='detail' onChange={onchange} placeholder={`${user.detail ? user.detail : 'Enter your self'}`}></textarea>
+                                                    <textarea name='detail' onChange={onchange} value={user.detail && user.detail} placeholder='Enter your self'></textarea>
                                                 </div>
                                                 <div className="popup__update pt-0 mb-5">
                                                     <label>Upload Image ( 200x200px )</label>
-                                                    <input type="file" name='image' onChange={convertToBase64} accept="image/*" placeholder={`${user.image ? user.image: 'No file chosen'}`} />
+                                                    <input type="file" name='image' onChange={convertToBase64} accept="image/*" />
                                                 </div>
                                                 <div className="d-flex align-items-center justify-content-center">
                                                     <button className="input__btn w-50" type="submit" onClick={handleClick}>Update Profile</button>
