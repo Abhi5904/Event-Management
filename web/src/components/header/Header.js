@@ -66,9 +66,9 @@ const Header = ({ handleSidebarBtnClick }) => {
                         </a>
                         <div className="app__herader-input p-relative">
                             <input type="search" placeholder="Search Here . . ." />
-                            <button>
+                            {/* <button>
                                 <span><Search absoluteStrokeWidth size={30} color='#858585' /></span>
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                     <div className="app__header-right">

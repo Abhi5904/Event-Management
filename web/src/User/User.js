@@ -11,7 +11,7 @@ const User = () => {
         <Routes>
             <Route path='/'>
                 <Route index element={<Home/>}/>
-                <Route path='contact' element={<Contact/>}/>
+                {/* <Route path='contact' element={<Contact/>}/> */}
                 <Route path='profile' element={<Profile/>}/>
                 <Route path='eventdetail' element={<EventDetail/>}/>
             </Route>

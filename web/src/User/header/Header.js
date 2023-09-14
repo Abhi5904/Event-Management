@@ -5,7 +5,7 @@ import '../style/animate.css'
 import { Link } from 'react-router-dom'
 
 
-const Header = () => {
+const Header = ({logo,linkColor}) => {
     const [isNavVisible, setIsNavVisible] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
 
@@ -31,12 +31,13 @@ const Header = () => {
     return (
         <>
             <header>
-                <div class={`header-area header-style-one ${isSticky ? 'sticky' : ''}`}>
+                <div class={`header-area header-style-one header-light ${isSticky ? 'sticky' : ''}`}>
                     <div class="container">
                         <div class="row">
                             <div class="col-xl-2 col-lg-12 col-md-12 col-sm-12 col-xs-12 d-xl-flex align-items-center">
                                 <div class="logo d-flex align-items-center justify-content-between">
-                                    <Link to="/"><img src="https://demo.egenslab.com/html/eventlab/assets/images/logo.png" alt="logo" /></Link>
+                                    <Link to="/" className='logo-dark' style={{display:`${isSticky ? 'block': 'none'}`}}><img src='https://demo.egenslab.com/html/eventlab/assets/images/logo.png' alt="logo" /></Link>
+                                    <Link to="/" className='logo-light' style={{display:`${isSticky ? 'none': 'block'}`}}><img src={logo} alt="logo" /></Link>
                                     <div class="mobile-menu d-flex ">
                                         <div onClick={toggleNav} class="hamburger d-block d-xl-none">
                                             <span class="h-top"></span>
@@ -53,10 +54,10 @@ const Header = () => {
                                     </div>
                                     <ul>
                                         <li class="has-child-menu">
-                                            <Link to="/">Home</Link>
+                                            <Link to="/" style={{color:linkColor}}>Home</Link>
                                         </li>
-                                        <li><Link to="/contact">Contact</Link></li>
-                                        <li><Link to="/profile">Profile</Link></li>
+                                        {/* <li><Link to="/contact" style={{color:linkColor}}>Contact</Link></li> */}
+                                        <li><Link to="/profile" style={{color:linkColor}}>Profile</Link></li>
                                     </ul>
                                     <div class="inner-btn d-xl-none">
                                         <Link to="/eventdetail" class="primary-btn-fill">Get Ticket</Link>

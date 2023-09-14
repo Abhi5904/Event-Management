@@ -3,8 +3,8 @@ import Organiser from "./event organiser/Organiser";
 function App() {
   return (
     <>
-    <User/>
-      {/* <Organiser /> */}
+    {/* <User/> */}
+      <Organiser />
     </>
   );
 }

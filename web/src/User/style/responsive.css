@@ -20,6 +20,10 @@
     header .header-style-one .main-nav>ul>li>a.active::before {
         display: none
     }
+    
+    header .header-style-one .main-nav>ul>li>a:hover::before{
+        border: none;
+    }
 
     header .header-style-one .main-nav>ul>li>a.active span {
         display: none
@@ -48,11 +52,12 @@
     }
 
     header .header-style-one .main-nav ul>li a.active::before {
-        opacity: 1 !important
+        opacity: 1 !important;
+        border: none;
     }
 
     header .header-style-one .main-nav ul>li a:hover {
-        background: 0 0
+        background: 0 0;
     }
 
     header .header-style-one .main-nav {

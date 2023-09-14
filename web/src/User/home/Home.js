@@ -1,6 +1,5 @@
 import React from 'react'
 import Header from '../header/Header'
-import { Armchair, MapPin, CalendarDays } from 'lucide-react'
 import '../style/style.css'
 import '../style/responsive.css'
 import '../style/animate.css'
@@ -10,7 +9,7 @@ import Card from '../card/Card'
 const Home = () => {
     return (
         <>
-            <Header />
+            <Header logo={'https://demo.egenslab.com/html/eventlab/assets/images/logo.png'} linkColor={'black'}/>
             <div class="main-slider-wrapper gray-300">
                 <div class="hero-area">
                     <div class="hero-shape">
@@ -23,13 +22,13 @@ const Home = () => {
                                     <div class="row align-items-center">
                                         <div class="col-lg-6">
                                             <div class="slide-content">
-                                                <h5><CalendarDays /> January 21, 2021</h5>
+                                                <h5><i class="bi bi-calendar2-week"></i> January 21, 2021</h5>
                                                 <h2>EVENTS, MEETUPS &
                                                     <span>CONFERENCES</span>
                                                 </h2>
                                                 <ul class="featured-event">
-                                                    <li><Armchair /> <span>500</span> Seat</li>
-                                                    <li><MapPin />1356 Broadway, New York</li>
+                                                    <li><i class="bi bi-diagram-3"></i> <span>500</span> Seat</li>
+                                                    <li><i class="bi bi-geo"></i> 1356 Broadway, New York</li>
                                                 </ul>
                                                 <div class="slider-btns">
                                                     <a href="/eventdetail" class="primary-btn-fill">Book Now</a>
@@ -65,7 +64,7 @@ const Home = () => {
                                         <div class="col-lg-4">
                                             <div class="searchbar-input-group">
                                                 <input type="date" id="datepicker" placeholder="Date" />
-                                                <i class="bi bi-calendar2-week"></i>
+                                                {/* <i class="bi bi-calendar2-week"></i> */}
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
@@ -148,6 +147,8 @@ const Home = () => {
                                     <div class="tab-pane fade show active" id="pills-event1" role="tabpanel"
                                         aria-labelledby="pills-tab1">
                                         <div className="row">
+                                            <Card />
+                                            <Card />
                                             <Card />
                                         </div>
                                     </div>

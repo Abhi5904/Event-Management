@@ -9,7 +9,7 @@ import '../style/animate.css'
 const Contact = () => {
   return (
     <>
-    <Header/>
+    <Header logo={'https://demo.egenslab.com/html/eventlab/assets/images/logo-v2.png'}/>
     <Hero/>
     <Footer/>
     </>

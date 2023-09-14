@@ -129,7 +129,7 @@ textarea {
 select {
     padding: 8px 10px;
     background: #fff;
-    border: 1px solid #fff;
+    border: 1px solid #eee;
     border-radius: 5px;
     display: block;
     width: 100%;
@@ -756,7 +756,8 @@ button[type=submit].primary-submit:hover {
     box-shadow: 0 2px 28px 0 rgba(0, 0, 0, .1);
     background: #fff;
     background-repeat: no-repeat;
-    background-size: cover
+    background-size: cover;
+    color: #000 !important;
 }
 
 .custom-select.package-option {
@@ -1143,7 +1144,8 @@ header .header-style-one {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 9
+    z-index: 9;
+    /* background: #2d373c; */
 }
 
 header .header-style-one .main-nav {
@@ -1231,7 +1233,7 @@ header .header-style-one .main-nav>ul>li>a.active {
     font-size: 16px
 }
 
-header .header-style-one .main-nav>ul>li>a.active::before {
+header .header-style-one .main-nav>ul>li>a:hover::before {
     position: absolute;
     content: "";
     width: 100%;
@@ -1292,7 +1294,8 @@ header .header-style-one .main-nav>ul>li>a.active span {
 
 .header-style-one .main-nav ul>li a:hover {
     background: 0 0;
-    color: #d21756 !important
+    color: #d21756 !important;
+    /* border: 1px solid #d21756; */
 }
 
 .header-style-one .main-nav .fl {
@@ -1776,6 +1779,7 @@ header .header-style-two .main-nav ul li a.active span {
 }
 
 .hero-area {
+    /* background:linear-gradient(90deg, rgba(109,99,101,1) 0%, rgba(78,71,71,1) 0%, rgba(20,14,16,1) 100%); */
     background: conic-gradient(from 243.17deg at 52.66% 45.72%, rgba(206, 20, 70, 0.25) 0deg, rgba(255, 255, 255, 0) 66.85deg, rgba(222, 95, 129, 0.3) 266.25deg, rgba(206, 20, 70, 0.25) 360deg);
     position: relative
 }
@@ -2644,14 +2648,20 @@ header .header-style-two .main-nav ul li a.active span {
     font-size: 13px
 }
 
-.ed-main-wrap .ed-tabs-wrapper {
-    margin-top: 66px
-}
-
 .ed-main-wrap .ed-tabs-wrapper .tabs-pill ul {
     position: relative
 }
 
+.ed-main-wrap .ed-tabs-wrapper {
+    margin-top: 66px
+}
+
+.nav-link:hover{
+    color: #000;
+}
+.nav-link:active{
+    color: #fff !important;
+}
 .ed-main-wrap .ed-tabs-wrapper .tabs-pill ul::before {
     position: absolute;
     content: "";
@@ -2710,6 +2720,7 @@ header .header-style-two .main-nav ul li a.active span {
     border-radius: 50%;
     background: #fff
 }
+
 
 .ed-main-wrap .ed-tabs-wrapper .tabs-pill ul li button.nav-link.active {
     background: #ce1446
@@ -6945,7 +6956,10 @@ header .header-style-two .main-nav ul li a.active span {
     -webkit-transition: all .4s ease;
     transition: all .4s ease
 }
-
+button:not(:disabled) {
+    cursor: pointer;
+    color: black;
+}
 .schedule-sidebar .schedule-sidebar-wrapper {
     overflow-y: auto;
     position: fixed;
@@ -7168,3 +7182,4 @@ header .header-style-two .main-nav ul li a.active span {
     color: #fff;
     font-family: raleway, sans-serif
 }
+

@@ -73,7 +73,7 @@ async (req,res)=>{
     let success = false
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const errorMsg = error.array().map((error)=>{
+        const errorMsg = errors.array().map((error)=>{
             return error.msg
         })
         return res.status(400).json({error: errorMsg[0]})
