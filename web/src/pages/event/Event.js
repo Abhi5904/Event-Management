@@ -259,7 +259,7 @@ const delevent = ()=>{
               <div className="mb-3">
                 <label for="ecategory" className="form-label text-dark">Event Category</label>
                 <select className="form-select form-select-sm " onChange={onchange} aria-label="Small select example" name='ecategory' value={event.ecategory}>
-                  <option selected>Open this select menu</option>
+                  <option hidden>Open this select menu</option>
                   {catg && catg.map((category) => {
                     return <option value={category._id}>{category.categoryname}</option>
                   })}
@@ -269,7 +269,7 @@ const delevent = ()=>{
               <div className="mb-3">
                 <label for="esponser" className="form-label text-dark">Event Sponser</label>
                 <select className="form-select form-select-sm" onChange={onchange} aria-label="Small select example" name='esponser' value={event.esponser}>
-                  <option selected>Open this select menu</option>
+                  <option hidden>Open this select menu</option>
                   {spn && spn.map((sponser) => {
                     return <option value={sponser._id}>{sponser.sponserName}</option>
                   })}

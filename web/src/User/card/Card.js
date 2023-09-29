@@ -1,31 +1,31 @@
 import React from 'react'
 import { Share2 } from 'lucide-react'
+import moment from "moment"
 
-const Card = () => {
+const Card = ({event,id}) => {
     return (
         <>
             <div class="col-lg-4 col-md-6 wow fadeInUp animated" data-wow-delay="200ms"
                 data-wow-duration="1500ms">
                 <div class="event-card-md">
                     <div class="event-thumb">
-                        <img src="https://demo.egenslab.com/html/eventlab/assets/images/event/ev-md1.png" alt="img" />
+                        <img src={event.image} alt="img" className='img-fluid'/>
                         <div class="event-lavel">
-                            <i class="bi bi-diagram-3"></i> <span>500 Seat</span>
+                            <i class="bi bi-diagram-3"></i> <span>{event.noOfTicket} Seat</span>
                         </div>
                     </div>
                     <div class="event-content">
                         <div class="event-info">
                             <div class="event-date"><a href="/"> <i
-                                class="bi bi-calendar2-week"></i> January 21, 2021</a>
+                                class="bi bi-calendar2-week"></i> {moment(event.eventStDate).format('MMMM Do YYYY')}</a>
                             </div>
                             <div class="event-location"><a href="/"> <i
-                                class="bi bi-geo-alt"></i> Broadw, New York</a></div>
+                                class="bi bi-geo-alt"></i> {event.eventLocation}</a></div>
                         </div>
-                        <h5 class="event-title"><a href="/">Media companies
-                            need to better one then educate advertisers.</a></h5>
+                        <h5 class="event-title"><a href="/">{event.eventName}</a></h5>
                         <div class="event-bottom">
                             <div class="event-readme">
-                                <a href="/eventdetail">Book Now</a>
+                                <a href={`/eventdetail/${id}`}>Book Now</a>
                             </div>
                             <div class="event-share-icons">
                                 <ul class="share-options">

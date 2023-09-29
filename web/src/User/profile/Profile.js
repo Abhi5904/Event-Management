@@ -154,13 +154,13 @@ const Profile = () => {
                       <div className="purchased">
                         <h5 className="ed-subtitle">Purchased Event</h5>
                         <div className="row">
+                          {/* <Card />
                           <Card />
-                          <Card />
-                          <Card />
+                          <Card /> */}
                         </div>
                       </div>
                       <div className="calendar my-5">
-                        <div className="container-fluid h-100">
+                        <div className="h-100">
                         <h5 className="ed-subtitle">Calendar view</h5>
                           <div className='calendar-container d-flex justify-content-center my-4'>
                             <Calendar onChange={setDate} value={date} className='shadow-none' style={{fontSize: '15px'}}/>
@@ -177,14 +177,14 @@ const Profile = () => {
                       <div className="upcomingEvent">
                       <h5 className="ed-subtitle">Upcoming Event</h5>
                       <div className="row">
-                        <Card/>
-                        <Card/>
+                        {/* <Card/>
+                        <Card/> */}
                       </div>
                       </div>
                       <div className="lastSixMonthEvent my-5">
                       <h5 className="ed-subtitle">Last Six Month Event</h5>
                       <div className="row">
-                        <Card/>
+                        {/* <Card/> */}
                       </div>
                       </div>
                     </div>

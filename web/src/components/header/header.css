@@ -579,7 +579,7 @@ only screen and (min-width: 992px) and (max-width: 1199px) {
 #langdropdown {
     cursor: pointer;
     text-decoration: none;
-    margin-top: 1rem !important;
+    /* margin-top: 1rem !important; */
     margin: 0 1rem;
 }
 

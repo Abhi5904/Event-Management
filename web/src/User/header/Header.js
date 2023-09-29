@@ -60,7 +60,7 @@ const Header = ({logo,linkColor}) => {
                                         <li><Link to="/profile" style={{color:linkColor}}>Profile</Link></li>
                                     </ul>
                                     <div class="inner-btn d-xl-none">
-                                        <Link to="/eventdetail" class="primary-btn-fill">Get Ticket</Link>
+                                        <Link to="/" class="primary-btn-fill">Get Ticket</Link>
                                     </div>
                                 </nav>
                             </div>

@@ -204,7 +204,7 @@ const Addevent = () => {
                                 <label className="input__field-text">Event Category</label>
                                 <div className="contact__select">
                                   <select onChange={onchange} value={event.category} name='category'>
-                                    <option>Select the category</option>
+                                    <option hidden>Select the category</option>
                                     {catg && catg.map((category) => {
                                       return <option value={category._id}>{category.categoryname}</option>
                                     })}
@@ -227,7 +227,7 @@ const Addevent = () => {
                                 <label className="input__field-text">Event Sponser</label>
                                 <div className="contact__select">
                                   <select onChange={onchange} name='sponser' value={event.sponser}>
-                                    <option value="0">Select the sponser</option>
+                                    <option hidden>Select the sponser</option>
                                     {spn && spn.map((sponser) => {
                                       return <option value={sponser._id}>{sponser.sponserName}</option>
                                     })}

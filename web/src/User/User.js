@@ -1,22 +1,23 @@
 import React from 'react'
 import { Routes,BrowserRouter as Router, Route } from 'react-router-dom'
 import EventDetail from './event detail/EventDetail'
-import Contact from './contact/Contact'
 import Profile from './profile/Profile'
 import Home from './home/Home'
+import Eventstate from '../context/Eventstate'
 const User = () => {
   return (
     <>
-    <Router>
+    {/* <Router> */}
+      {/* <Eventstate> */}
         <Routes>
             <Route path='/'>
                 <Route index element={<Home/>}/>
-                {/* <Route path='contact' element={<Contact/>}/> */}
                 <Route path='profile' element={<Profile/>}/>
-                <Route path='eventdetail' element={<EventDetail/>}/>
+                <Route path='eventdetail/:eventId' element={<EventDetail/>}/>
             </Route>
         </Routes>
-    </Router>
+      {/* </Eventstate> */}
+    {/* </Router> */}
     </>
   )
 }

@@ -427,8 +427,47 @@ const Eventstate = (props) => {
   const calendarDate = (date) => {
     setSelectDate(date)
   }
+
+  // for user side fetch all event
+
+  const userfetchevent = async()=>{
+    const response = await fetch(`${host}/api/event/user/fetchevent`,{
+      method:'GET',
+      headers:{
+        'Content-type':'application/json'
+      }
+    })
+    const json = response.json()
+    return json
+  }
+
+  // for user side fetch all category
+
+  const userfetchcategory = async()=>{
+    const response = await fetch(`${host}/api/event/user/fetchcategory`,{
+      method:'GET',
+      headers:{
+        'Content-type':'application/json'
+      }
+    })
+    const json = response.json()
+    return json
+  }
+
+  // for user side fetch all sponser
+
+  const userfetchsponser = async()=>{
+    const response = await fetch(`${host}/api/event/user/fetchsponser`,{
+      method:'GET',
+      headers:{
+        'Content-type':'application/json'
+      }
+    })
+    const json = response.json()
+    return json
+  }
   return (
-    <EventContext.Provider value={{ navigate, selectDate, calendarDate, users, getuser, updateuser, categorys, getcategory, addcategory, editcategory, deletecategory, sponseres, getsponser, addsponser, editsponser, deletesponser, events, getevent, addevent, editevent, deletevent, eventImage }}>
+    <EventContext.Provider value={{userfetchsponser,userfetchcategory,userfetchevent, navigate, selectDate, calendarDate, users, getuser, updateuser, categorys, getcategory, addcategory, editcategory, deletecategory, sponseres, getsponser, addsponser, editsponser, deletesponser, events, getevent, addevent, editevent, deletevent, eventImage }}>
       {props.children}
     </EventContext.Provider>
   )

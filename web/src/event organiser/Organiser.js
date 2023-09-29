@@ -21,8 +21,8 @@ import './organiser.css'
 const Organiser = () => {
     return (
         <>
-            <Router>
-                <Eventstate>
+            {/* <Router> */}
+                {/* <Eventstate> */}
                     <Alert />
                     <Routes>
                         <Route path="/">
@@ -49,8 +49,8 @@ const Organiser = () => {
                             </Route>
                         </Route>
                     </Routes>
-                </Eventstate>
-            </Router>
+                {/* </Eventstate> */}
+            {/* </Router> */}
         </>
     )
 }

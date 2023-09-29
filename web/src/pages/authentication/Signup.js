@@ -82,7 +82,7 @@ const Signup = () => {
                   </div>
                   <div className="contact__select country mb-4">
                     <span style={{position: 'absolute',top: '14px',insetInlineStart: '20px',zIndex:'1'}}><Globe  /></span>
-                    <select onChange={onchange} value={formdata.country} name='country' className='border-white' id='country' style={{color:'#000',width:'100%',height: '60px',paddingInlineStart: '50px',paddingInlineEnd: '20px'}}>
+                    <select onChange={onchange} value={formdata.country} name='country' className='border-white m-0' id='country' style={{color:'#000',width:'100%',height: '60px',paddingInlineStart: '50px',paddingInlineEnd: '20px'}}>
                       <option>Select the country</option>
                       <option value={'India(+91)'}>India(+91)</option>
                       <option value={'UK(+44)'}>UK(+44)</option>
@@ -97,7 +97,7 @@ const Signup = () => {
                   </div>
                   <div className="contact__select country mb-4">
                     <span style={{position: 'absolute',top: '14px',insetInlineStart: '20px',zIndex:'1'}}><User/></span>
-                    <select onChange={onchange} value={formdata.role} name='role' className='border-white' id='country' style={{color:'#000',width:'100%',height: '60px',paddingInlineStart: '50px',paddingInlineEnd: '20px'}}>
+                    <select onChange={onchange} value={formdata.role} name='role' className='border-white m-0' id='country' style={{color:'#000',width:'100%',height: '60px',paddingInlineStart: '50px',paddingInlineEnd: '20px'}}>
                       <option>Select the Role</option>
                       <option value={'user'}>User</option>
                       <option value={'organizer'}>Organizer</option>

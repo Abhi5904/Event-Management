@@ -46,7 +46,7 @@ const Addcategory = () => {
     }
 
     const regex = /^\S*$/;
-    if(!regex.test(category.title) || !regex.test(category.detail)){
+    if(!regex.test(category.title)){
       showAlert("error", "Input field can not be blank.");
     }
 

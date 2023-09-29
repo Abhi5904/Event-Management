@@ -417,4 +417,41 @@ router.post('/uploadeventimage/:id',fetchuser,async(req,res)=>{
     }
 })
 
+
+// for user side fetch all event
+
+router.get('/user/fetchevent',async(req,res)=>{
+    try {
+        const data = await Event.find()
+        res.json(data)
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send('Internal Server Error')
+    }
+})
+
+// for user side fetch all category
+
+router.get('/user/fetchcategory',async(req,res)=>{
+    try {
+        const data = await Category.find()
+        res.json(data)
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send('Internal Server Error')
+    }
+})
+
+//for user side fetch all sponser
+
+router.get('/user/fetchsponser',async(req,res)=>{
+    try {
+        const data = await Sponser.find()
+        res.json(data)
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send('Internal Server Error')
+    }
+})
+
 module.exports = router
