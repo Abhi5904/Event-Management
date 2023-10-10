@@ -85,10 +85,8 @@ function SingleEvent() {
         
         return `${day}-${month}-${year}`;
     }
-    console.log(user)
-    console.log(event)
-    console.log(category)
-    console.log(sponser)
+
+    const totalUnsoldTicket = event && event.noOfTicket - event.soldTicket
     return (
         <>
             <div className="offcanvas__overlay"></div>
@@ -144,12 +142,11 @@ function SingleEvent() {
                                 <hr />
                                 <h5>Sponser : {sponser && sponser.sponserName}</h5>
                                 <hr />
-                                <h5>Total Sold Ticket : {}</h5>
+                                <h5>Total Sold Ticket : {event && event.soldTicket}</h5>
                                 <hr />
-                                <h5>Total Unsold Ticket : {}</h5>
+                                <h5>Total Unsold Ticket : {event && totalUnsoldTicket}</h5>
                                 <hr />
                             </div>
-
                         </div>
                     </div>
                 </div>

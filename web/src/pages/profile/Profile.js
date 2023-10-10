@@ -35,7 +35,7 @@ const Profile = () => {
     const fetchuserdata = async () => {
       try {
         const userdata = await getuser();
-        const usertoken = localStorage.getItem('token')
+        const usertoken = localStorage.getItem('organisertoken')
         const userid = jwtDecode(usertoken)
         const currentUser = userdata.find(element => element._id === userid.user.id);
         if (currentUser) {
@@ -63,7 +63,7 @@ const Profile = () => {
                 <div className='img mb-5 p-4'>
                   {user && user.image ? <img src={user.image}  className='img-fluid w-75' alt='img not found'/> : <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png'className='img-fluid h-50 w-50 ' />}
                   <p className='imgp'>
-                    <Link to="/setting"><img className="edit" src="https://i.ibb.co/vB163TR/edit.png" style={{ height: 20 + 'px', width: 20 + 'px' }} /></Link>
+                    <Link to="/organiser/setting"><img className="edit" src="https://i.ibb.co/vB163TR/edit.png" style={{ height: 20 + 'px', width: 20 + 'px' }} /></Link>
                   </p>
                 </div>
                 <div className='container'>

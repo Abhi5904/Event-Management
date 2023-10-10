@@ -60,12 +60,7 @@ const Addevent = () => {
       showAlert('error', 'Please fill out all fields.');
       return;
     }
-
-    const regex = /^\S*$/;
-    if(!regex.test(event.name) || !regex.test(event.detail) || !regex.test(event.location) || !regex.test(event.contact)){
-      showAlert("error", "Input field can not be blank.");
-    }
-
+    
     const catgData = JSON.parse(localStorage.getItem('categoryData')) || []
     const catgdecodedDataArray = [];
 
@@ -106,8 +101,6 @@ const Addevent = () => {
       console.log('No matching category found');
     }
     addevent(event.name, event.detail, event.location, event.stdate, event.endate, event.contact, event.image, event.noticket, event.price)
-    // setEvent({ name: e.target.name, detail: e.target.detail, location: e.target.location, stdate: e.target.stdate, endate: e.target.endate, contact: e.target.contact,noticket: e.target.noticket, price: e.target.price, category: e.target.category, sponser: e.target.sponser })
-    // setEvent({ name: '', detail: '', location: '', stdate: '', endate: '', contact: '', image: '', noticket: '', price: '', category: '', sponser: '' })
   }
 
   const onchange = (e) => {

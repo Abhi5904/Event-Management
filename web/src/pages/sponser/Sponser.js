@@ -34,14 +34,14 @@ const Sponser = () => {
   const [sponser, setSponser] = useState({ id: '', ename: '', edetail: '', elogo: '' })
   let navigate = useNavigate()
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('organisertoken')) {
       getsponser();
     }
     else {
       alert('error')
       navigate('login')
     }
-  }, [])
+  }, [sponseres])
   // for sorting category list descending order(to see recent event first)
 
   sponseres.sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -65,8 +65,9 @@ const Sponser = () => {
     refclose.current.click()
 
     const regex = /^\S*$/;
-    if(!regex.test(sponser.ename) || !regex.test(sponser.edetail)){
+    if(!regex.test(sponser.ename)){
       showAlert("error", "Input field can not be blank.");
+      return 
     }
 
     const spndecodedDataArray = [];
@@ -137,9 +138,7 @@ const Sponser = () => {
     } else {
       console.log('No matching category found');
     }
-
     deletesponser(sponser.id)
-    showAlert('success', `sponser deleted successfully`)
   }
 
   // for image 
@@ -235,7 +234,7 @@ const Sponser = () => {
         <div className='page__body-wrapper'>
           <Header handleSidebarBtnClick={handleSidebarBtnClick} handleDropdown={handleDropdown} dropdown={dropdown} showMenu={showMenu} />
           <div className="app__slide-wrapper">
-            <HeaderTop text={'Sponser List'} btnText={'Add Sponser'} style={'visible'} redirect={"/event/sponser/addsponser"} />
+            <HeaderTop text={'Sponser List'} btnText={'Add Sponser'} style={'visible'} redirect={"/organiser/event/sponser/addsponser"} />
             <button ref={refdelete} type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#delete"></button>
             <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
               Launch demo modal
@@ -267,7 +266,7 @@ const Sponser = () => {
                               <TableBody>
                                 {row.length === 0 ? <TableCell>No sponser availabel please add sponser</TableCell> :
                                   row && row.slice(pg * rpg, pg * rpg + rpg).map((sponser, index) => {
-                                    return <Sponseritem showAlert={showAlert} index={index} sponser={sponser} key={sponser._id} updatesponser={updatesponser} handleDeleteSponser={handleDeleteSponser} />
+                                    return <Sponseritem index={index} sponser={sponser} key={sponser._id} updatesponser={updatesponser} handleDeleteSponser={handleDeleteSponser} />
                                   })}
                               </TableBody>
                             </Table>

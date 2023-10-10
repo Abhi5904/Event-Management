@@ -2,39 +2,42 @@ import React from 'react'
 import { Share2 } from 'lucide-react'
 import moment from "moment"
 
-const Card = ({event,id}) => {
+const Card = ({ event, id }) => {
+    const totalTicket = event.noOfTicket - event.soldTicket
     return (
         <>
-            <div class="col-lg-4 col-md-6 wow fadeInUp animated" data-wow-delay="200ms"
+            <div className="col-lg-4 col-md-6 wow fadeInUp animated" data-wow-delay="200ms"
                 data-wow-duration="1500ms">
-                <div class="event-card-md">
-                    <div class="event-thumb">
-                        <img src={event.image} alt="img" className='img-fluid'/>
-                        <div class="event-lavel">
-                            <i class="bi bi-diagram-3"></i> <span>{event.noOfTicket} Seat</span>
+                <div className="event-card-md">
+                    <div className="event-thumb h-50">
+                        <div className="imgae" style={{position:'relative',overflow:'hidden',height:'0',paddingBottom:'75%'}}>
+                            <img src={event.image} alt="img" className='img-fluid ' style={{objectFit:'cover'}}/>
+                        </div>
+                        <div className="event-lavel">
+                            <i className="bi bi-diagram-3"></i> <span>{totalTicket} Seat</span>
                         </div>
                     </div>
-                    <div class="event-content">
-                        <div class="event-info">
-                            <div class="event-date"><a href="/"> <i
-                                class="bi bi-calendar2-week"></i> {moment(event.eventStDate).format('MMMM Do YYYY')}</a>
+                    <div className="event-content">
+                        <div className="event-info">
+                            <div className="event-date"><a href="/"> <i
+                                className="bi bi-calendar2-week"></i> {moment(event.eventStDate).format('MMMM Do YYYY')}</a>
                             </div>
-                            <div class="event-location"><a href="/"> <i
-                                class="bi bi-geo-alt"></i> {event.eventLocation}</a></div>
+                            <div className="event-location"><a href="/"> <i
+                                className="bi bi-geo-alt"></i> {event.eventLocation}</a></div>
                         </div>
-                        <h5 class="event-title"><a href="/">{event.eventName}</a></h5>
-                        <div class="event-bottom">
-                            <div class="event-readme">
+                        <h5 className="event-title"><a href="/">{event.eventName}</a></h5>
+                        <div className="event-bottom">
+                            <div className="event-readme">
                                 <a href={`/eventdetail/${id}`}>Book Now</a>
                             </div>
-                            <div class="event-share-icons">
-                                <ul class="share-options">
-                                    <li><a href="/"><i class="fab fa-facebook-f" style={{ fontSize: '1rem' }}></i></a></li>
-                                    <li><a href="/"><i class="fab fa-instagram" style={{ fontSize: '1rem' }}></i></a></li>
-                                    <li><a href="/"><i class="fab fa-linkedin-in" style={{ fontSize: '1rem' }}></i></a></li>
-                                    <li><a href="/"><i class="fab fa-twitter" style={{ fontSize: '1rem' }}></i></a></li>
+                            <div className="event-share-icons">
+                                <ul className="share-options">
+                                    <li><a href="/"><i className="fab fa-facebook-f" style={{ fontSize: '1rem' }}></i></a></li>
+                                    <li><a href="/"><i className="fab fa-instagram" style={{ fontSize: '1rem' }}></i></a></li>
+                                    <li><a href="/"><i className="fab fa-linkedin-in" style={{ fontSize: '1rem' }}></i></a></li>
+                                    <li><a href="/"><i className="fab fa-twitter" style={{ fontSize: '1rem' }}></i></a></li>
                                 </ul>
-                                <div class="share-btn"><Share2 /></div>
+                                <div className="share-btn"><Share2 /></div>
                             </div>
                         </div>
                     </div>

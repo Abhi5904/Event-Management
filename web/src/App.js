@@ -1,4 +1,4 @@
-import { Route, Router, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import React from 'react'
 import User from "./User/User";
 import Organiser from "./event organiser/Organiser";
@@ -31,7 +31,7 @@ function App() {
             <Route path="/">
               <Route index element={<Home />} />
               <Route path="profile" element={<Profile />} />
-              <Route path="eventdetail" element={<EventDetail />} />
+              <Route path="eventdetail/:eventId" element={<EventDetail />} />
             </Route>
             <Route path="organiser">
               <Route index element={<HomeM />} />
@@ -39,14 +39,17 @@ function App() {
               <Route path="kyc" element={<Kyc />} />
               <Route path="profilem" element={<ProfileM />} />
               <Route path="setting" element={<Setting />} />
-              <Route path="event" element={<Event />}>
-                <Route index element={<Addevent />} />
+              <Route path="event">
+                <Route index element={<Event />}/>
+                <Route path="addevent" element={<Addevent />} />
                 <Route path="eventdetailm" element={<SingleEvent />} />
-                <Route path="category" element={<Category />}>
-                  <Route index element={<Addcategory />} />
+                <Route path="category">
+                  <Route index element={<Category />}/>
+                  <Route path="addcategory" element={<Addcategory />} />
                 </Route>
-                <Route path="sponser" element={<Sponser />}>
-                  <Route index element={<Addsponser />} />
+                <Route path="sponser">
+                  <Route index element={<Sponser />}/>
+                  <Route path="addsponser" element={<Addsponser />} />
                 </Route>
               </Route>
             </Route>
@@ -57,10 +60,15 @@ function App() {
       </Router>
       {/* <Router>
         <Eventstate>
-        <Route>
-          <Route index element={<User/>}/>
-          <Route path="organiser" element={<Organiser/>}/>
-        </Route>
+        <Alert />
+          <Routes>
+            <Route path="/">
+              <Route index element={<User />} />
+              <Route path="organiser" element={<Organiser />} />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+            </Route>
+          </Routes>
         </Eventstate>
       </Router> */}
       {/* <User/>

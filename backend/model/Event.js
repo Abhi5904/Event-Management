@@ -48,6 +48,10 @@ const eventSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    soldTicket:{
+        type : Number,
+        default : 0
+    },
     date: {
         type: Date,
         default: Date.now

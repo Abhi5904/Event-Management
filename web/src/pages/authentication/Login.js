@@ -29,15 +29,20 @@ const Login = () => {
       body: JSON.stringify({ email: formdata.email, password: formdata.password })
     })
     const json = await response.json()
-    console.log(json)
     if (json.success) {
-      localStorage.setItem('token', json.jwtData)
-      navigate('/')
-      showAlert('success', 'Login successfully')
+      if(json.role === 'user'){
+        localStorage.setItem('usertoken', json.data)
+        navigate('/')
+        showAlert('success', json.message)
+      }else{
+        localStorage.setItem('organisertoken', json.data)
+        navigate('/organiser')
+        showAlert('success', json.message)
+      }
     }
     else {
       setFormdata({email: '', password: '' }); 
-      showAlert('error', json.error)
+      showAlert('error', json.message)
     }
   }
   const onchange = (e) => {

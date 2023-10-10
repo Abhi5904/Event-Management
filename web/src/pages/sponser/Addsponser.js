@@ -37,14 +37,7 @@ const Addsponser = () => {
       showAlert('error','Please fill out all fields.')
       return
     }
-
-    const regex = /^\S*$/;
-    if(!regex.test(sponser.name) || !regex.test(sponser.detail)){
-      showAlert("error", "Input field can not be blank.");
-    }
-
     addsponser(sponser.name,sponser.detail,sponser.logo)
-    // setSponser({name:e.target.name,detail:e.target.detail,logo:e.target.logo})
     setSponser({name:'',detail:'',logo:''})
   }
   const onchange = (e)=>{

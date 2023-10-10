@@ -32,13 +32,19 @@ const Signup = () => {
     const json = await response.json()
     console.log(json)
     if (json.success) {
-      localStorage.setItem('token', json.jwtData)
+      if(json.role==='user'){
+        localStorage.setItem('usertoken', json.data)
         navigate('/')
-        showAlert('success','Account Created Successfully')
+        showAlert('success',json.message)
+      }else{
+        localStorage.setItem('organisertoken',json.data)
+        navigate('/organiser')
+        showAlert('success',json.message)
+      }
     }
     else {
       // setFormdata({ name: '', email: '', password: '', country: '', contactno: '', role: '' })
-      showAlert('error',json.error)
+      showAlert('error',json.message)
     }
 
   }

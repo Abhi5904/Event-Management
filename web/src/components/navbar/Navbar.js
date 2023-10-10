@@ -7,14 +7,14 @@ import { showAlert } from "../alert/Alert";
 const Navbar = ({ showMenu, handleArrowClick, handleArrowEClick, arrow, arrowE }) => {
    let navigate = useNavigate()
    const handleLogout = ()=>{
-      localStorage.removeItem('token')
+      localStorage.removeItem('organisertoken')
       localStorage.removeItem('categoryData')
       localStorage.removeItem('sponserData')
       localStorage.removeItem('categoryid')
       localStorage.removeItem('sponserid')
       localStorage.removeItem('eventdetail')
       showAlert('success','Logout')
-      navigate('/login')
+      navigate('/')
    }
    return (
       <>
@@ -22,12 +22,12 @@ const Navbar = ({ showMenu, handleArrowClick, handleArrowEClick, arrow, arrowE }
          <div className={`shadow-lg bg-body rounded ${showMenu ? 'expovent__sidebar collapsed' : 'expovent__sidebar'}`} style={{  margin: '0', padding: '0' }}>
             <div className="logo-details shadow-sm bg-body">
                <span>
-                  <Link to="/" style={{ display: `${showMenu ? 'block' : 'none'}` }}>
+                  <Link to="/organiser" style={{ display: `${showMenu ? 'block' : 'none'}` }}>
                      EM
                   </Link>
                </span>
                <span>
-                  <Link to="/" style={{ display: `${showMenu ? 'none' : 'block'}` }}>
+                  <Link to="/organiser" style={{ display: `${showMenu ? 'none' : 'block'}` }}>
                      Event Management
                   </Link>
                </span>
@@ -37,25 +37,25 @@ const Navbar = ({ showMenu, handleArrowClick, handleArrowEClick, arrow, arrowE }
                   <div>
                      <ul className="metismenu" id="menu">
                         <li>
-                           <Link to="/" aria-expanded="false">
+                           <Link to="/organiser" aria-expanded="false">
                               <i><Home size={25}/></i>
                               <span className="nav-text">Dashboard</span>
                            </Link>
                         </li>
                         <li>
-                           <Link to="/calendar" aria-expanded="false">
+                           <Link to="/organiser/calendar" aria-expanded="false">
                               <i><CalendarDays size={25} /></i>
                               <span className="nav-text">Calender View</span>
                            </Link>
                         </li>
                         <li>
-                           <Link to="/kyc" aria-expanded="false">
+                           <Link to="/organiser/kyc" aria-expanded="false">
                               <i><BadgeAlert size={25} /></i>
                               <span className="nav-text">KYC Verification</span>
                            </Link>
                         </li>
                         <li>
-                           <Link to="/" aria-expanded="false">
+                           <Link to="/organiser" aria-expanded="false">
                               <i><BellDot size={25} /></i>
                               <span className="nav-text">Notification</span>
                            </Link>
@@ -67,9 +67,9 @@ const Navbar = ({ showMenu, handleArrowClick, handleArrowEClick, arrow, arrowE }
                               <span className="nav-text">Event</span>
                            </Link>
                            <ul role="listbox" aria-expanded="false" className={`${arrowE ? 'mm-collapse mm-show' : 'mm-collapse'}`} >
-                              <li><Link to="/event/category">Category</Link></li>
-                              <li><Link to="/event/sponser">Sponser</Link></li>
-                              <li><Link to="/event"> Event</Link></li>
+                              <li><Link to="/organiser/event/category">Category</Link></li>
+                              <li><Link to="/organiser/event/sponser">Sponser</Link></li>
+                              <li><Link to="/organiser/event"> Event</Link></li>
                            </ul>
                         </li>
                         <li className={`${arrow ? 'mm-active' : ''}`}>
@@ -79,8 +79,8 @@ const Navbar = ({ showMenu, handleArrowClick, handleArrowEClick, arrow, arrowE }
                               <span className="nav-text">Profile</span>
                            </Link>
                            <ul role="listbox" aria-expanded="false" className={`${arrow ? 'mm-collapse mm-show' : 'mm-collapse'}`} >
-                              <li><Link to="/profile">Profile</Link></li>
-                              <li><Link to="/setting">Setting</Link></li>
+                              <li><Link to="/organiser/profilem">Profile</Link></li>
+                              <li><Link to="/organiser/setting">Setting</Link></li>
                               <li><Link to="/login" onClick={handleLogout}>Logout</Link></li>
                            </ul>
                         </li>

@@ -6,7 +6,6 @@ import HeaderTop from '../../components/top section/HeaderTop'
 import './calendar.css'
 import { Link } from 'react-router-dom'
 import { Eye } from 'lucide-react'
-import Tabledata from '../../components/Table/Tabledata'
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -216,7 +215,7 @@ const Calendar = () => {
                               </td>
                               <td>
                                 <div className="attendant__action">
-                                  <span onClick={() => handleviewEvent(event._id)}><Link to={`/event/eventdetail`}><Eye absoluteStrokeWidth /></Link></span>
+                                  <span onClick={() => handleviewEvent(event._id)}><Link to={`/organiser/event/eventdetailm`}><Eye absoluteStrokeWidth /></Link></span>
                                 </div>
                               </td>
                             </tr>)

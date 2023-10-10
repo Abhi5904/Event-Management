@@ -58,7 +58,7 @@ const Eventitem = (props) => {
                 </td>
                 <td>
                     <div className="attendant__action d-flex gap-2">
-                        <span onClick={handleviewEvent}><Link to={`/event/eventdetail`}><Eye absoluteStrokeWidth /></Link></span>
+                        <span onClick={handleviewEvent}><Link to={`/organiser/event/eventdetailm`}><Eye absoluteStrokeWidth /></Link></span>
                         <span onClick={() => updateEvent(event)}><FileEdit absoluteStrokeWidth color='gray' /></span>
                         <span onClick={()=>handledeleteEvent(event)}><Trash2 absoluteStrokeWidth color='red' /></span>
                     </div>

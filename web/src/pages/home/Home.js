@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import "./home.css"
+import Table from '../../components/Table/Table'
 import Navbar from '../../components/navbar/Navbar'
 import Widget from "../../components/widget/Widget"
 import ProgressBar from "../../components/progress bar sold/ProgressBar"
 import Chart from "../../components/charts/Chart"
-import Table from "../../components/Table/Table"
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from '../../components/header/Header'
 import { Users, CalendarHeart, Ticket, CircleDollarSign } from 'lucide-react'
-import { Home } from 'lucide-react'
 import userdata from '../../context/Eventcontext'
 import HeaderTop from '../../components/top section/HeaderTop'
 const HomeM = () => {
@@ -18,7 +17,7 @@ const HomeM = () => {
 
   let navigate = useNavigate()
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    if (!localStorage.getItem('organisertoken')) {
       navigate('/login')
     }
   }, [navigate])
@@ -38,6 +37,8 @@ const HomeM = () => {
   const [countuser, setCountUser] = useState(0)
   const [totalevent, setTotalEvent] = useState(0)
   const [totalticket, setTotalTicket] = useState(0)
+  const [soldticket, setSoldticket] = useState(0)
+  const [unsoldticket, setUnsoldticket] = useState(0)
   const [countryuser, setCountryUser] = useState({ india: '', uk: '', usa: '', australia: '', italy: '' })
   useEffect(() => {
     const fetchuserdata = async () => {
@@ -48,9 +49,6 @@ const HomeM = () => {
           if (user.role === 'user') {
             usercounter += 1
             setCountUser(usercounter);
-            // console.log(user.country)
-            // let countrycounter = 0
-            // console.log(user.country)
             if (user.country === 'India(+91)') {
               setCountryUser({ ...countryuser, india: (countryuser.india || 0) + 1 })
             } else if (user.country === 'UK(+44)') {
@@ -73,12 +71,24 @@ const HomeM = () => {
     const fetcheventdata = async () => {
       try {
         const eventdata = await getevent();
-        const eventcount = eventdata.length
+        const eventcount = eventdata && eventdata.length
         setTotalEvent(eventcount)
         let sum = 0
+        let totalsoldticket = 0
+        let totalunsoldticket = 0
+        const unsoldticketevent = []
         const ticketdata = eventdata.map((event) => {
           sum = sum + Number(event.noOfTicket)
           setTotalTicket(sum)
+          totalsoldticket = totalsoldticket + Number(event.soldTicket)
+          setSoldticket(totalsoldticket)
+          if (new Date(event.eventEndDate) < new Date) {
+            unsoldticketevent.push(event)
+          }
+        })
+        unsoldticketevent && unsoldticketevent.map((e) => {
+          totalunsoldticket = totalunsoldticket + (Number(e.noOfTicket) - Number(e.soldTicket))
+          setUnsoldticket(totalunsoldticket)
         })
       } catch (error) {
         console.error("Error fetching event count:", error);
@@ -86,9 +96,7 @@ const HomeM = () => {
     }
     fetcheventdata()
   }, [])
-  // console.log(countryuser)
-  // console.log(countuser)
-  // console.log(totalevent)
+
   return (
     <>
       <div className="offcanvas__overlay"></div>
@@ -98,7 +106,7 @@ const HomeM = () => {
         <div className='page__body-wrapper'>
           <Header handleSidebarBtnClick={handleSidebarBtnClick} showMenu={showMenu} />
           <div className="app__slide-wrapper">
-            <HeaderTop text={'Dashboard'} style={'invisible'}/>
+            <HeaderTop text={'Dashboard'} style={'invisible'} />
             <div className="row g-20 widget">
               <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-6 widget_first">
                 <Widget icon={<Users absoluteStrokeWidth size={35} />} widgetname={'Total Registration'} count={countuser && countuser} />
@@ -110,10 +118,10 @@ const HomeM = () => {
                 <Widget icon={<Ticket absoluteStrokeWidth size={35} />} widgetname={'Total Ticket'} count={totalticket && totalticket} />
               </div>
               <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-6 widget_fourth">
-                <Widget icon={<Ticket absoluteStrokeWidth size={35} />} widgetname={'Total Ticket Sold'} count={0} />
+                <Widget icon={<Ticket absoluteStrokeWidth size={35} />} widgetname={'Total Ticket Sold'} count={soldticket && soldticket} />
               </div>
               <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-6 widget_fourth">
-                <Widget icon={<Ticket absoluteStrokeWidth size={35} />} widgetname={'After Event Total Unsold Ticket'} count={0} />
+                <Widget icon={<Ticket absoluteStrokeWidth size={35} />} widgetname={'After Event Total Unsold Ticket'} count={unsoldticket && unsoldticket} />
               </div>
               <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-6 widget_fourth">
                 <Widget icon={<CircleDollarSign absoluteStrokeWidth size={35} />} widgetname={'Total Revenue'} count={0} />
@@ -124,7 +132,7 @@ const HomeM = () => {
                 <Chart count={countryuser} />
               </div>
               <div class="col-xl-4 col-xxl-4 col-lg-12 col-md-12">
-                <ProgressBar lefname={'Positive Review'} title={'Review'} leftcount={500} rightname={'Negative Review'} rightcount={300} />
+                <ProgressBar title={'Review'} />
               </div>
 
               {/* <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
@@ -134,7 +142,7 @@ const HomeM = () => {
             </div>
             <div className="row">
               <div className="col-xxl-12">
-                <Table />
+               <Table/>
               </div>
             </div>
           </div>

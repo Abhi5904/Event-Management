@@ -23,7 +23,7 @@ const Organiser = () => {
         <>
             {/* <Router> */}
                 {/* <Eventstate> */}
-                    <Alert />
+                    {/* <Alert /> */}
                     <Routes>
                         <Route path="/">
                             <Route index element={<Home />} />
@@ -49,8 +49,8 @@ const Organiser = () => {
                             </Route>
                         </Route>
                     </Routes>
-                {/* </Eventstate> */}
-            {/* </Router> */}
+                {/* </Eventstate>
+            </Router> */}
         </>
     )
 }

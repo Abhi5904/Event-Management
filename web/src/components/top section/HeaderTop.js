@@ -14,7 +14,7 @@ const HeaderTop = ({ text, btnText, style,redirect }) => {
                                     <nav>
                                         <ul>
                                             <Home absoluteStrokeWidth size={35} />
-                                            <li><span><Link to="/">Home</Link></span></li>
+                                            <li><span><Link to="/organiser">Home</Link></span></li>
                                             <li className="active"><span>{text}</span></li>
                                         </ul>
                                     </nav>

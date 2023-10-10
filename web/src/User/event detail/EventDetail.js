@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import '../style/style.css'
 import '../style/responsive.css'
 import '../style/animate.css'
@@ -8,15 +8,20 @@ import Footer from '../footer/Footer'
 import eventContext from '../../context/Eventcontext'
 import { useParams } from 'react-router-dom'
 import moment from 'moment'
+import { showAlert } from '../../components/alert/Alert'
+import { Link } from 'react-router-dom'
 
 const EventDetail = () => {
     const context = useContext(eventContext)
-    const { userfetchevent, userfetchcategory, userfetchsponser, getuser } = context
+    const { userfetchevent, userfetchcategory, userfetchsponser, getuser, purchaseEvents, afterBookEventUpdateEvent } = context
     const [event, setEvent] = useState()
     const [category, setCategory] = useState()
     const [sponser, setSponser] = useState()
     const [user, setUser] = useState()
+    const [bookEvent, setBookEvent] = useState()
     const { eventId } = useParams()
+    const ref = useRef(null)
+    const refclose = useRef(null)
     useEffect(() => {
         const fetcheventdata = async () => {
             const eventdata = await userfetchevent();
@@ -39,34 +44,116 @@ const EventDetail = () => {
             fetchuserdata()
         }
     }, [event])
-    useEffect(()=>{
-        if(event){
-            const fetchcategory = async()=>{
+    useEffect(() => {
+        if (event) {
+            const fetchcategory = async () => {
                 const categorydata = await userfetchcategory()
-                const matchedCategory = categorydata.find((categoryid)=>categoryid._id ===  event.category)
-                if(matchedCategory){
+                const matchedCategory = categorydata.find((categoryid) => categoryid._id === event.category)
+                if (matchedCategory) {
                     setCategory(matchedCategory)
                 }
             }
             fetchcategory()
         }
-    },[event])
-    useEffect(()=>{
-        if(event){
-            const fetchsponser = async()=>{
+    }, [event])
+    useEffect(() => {
+        if (event) {
+            const fetchsponser = async () => {
                 const sponserdata = await userfetchsponser()
-                const matchedSponser = sponserdata.find((sponserid)=>sponserid._id ===  event.sponser)
-                if(matchedSponser){
+                const matchedSponser = sponserdata.find((sponserid) => sponserid._id === event.sponser)
+                if (matchedSponser) {
                     setSponser(matchedSponser)
                 }
             }
             fetchsponser()
         }
-    },[event])
+    }, [event])
+
+    const handlePurchaseEvent = (e) => {
+        e.preventDefault()
+        if (!bookEvent || !bookEvent.name || !bookEvent.email || !bookEvent.phoneno || !bookEvent.quantity) {
+            showAlert('error', 'Please fill in all fields.')
+            return
+        } else {
+            ref.current.click()
+        }
+    }
+    const handleModelPurchaseEvent = () => {
+        refclose.current.click()
+        purchaseEvents(eventId, bookEvent.name, bookEvent.email, bookEvent.phoneno, bookEvent.quantity)
+        afterBookEventUpdateEvent(eventId, bookEvent.quantity)
+        setBookEvent({ name: '', email: '', phoneno: '', quantity: '' })
+    }
+    const onchange = (e) => {
+        setBookEvent({ ...bookEvent, [e.target.name]: e.target.value })
+    }
+    const price = event && event.totalPrice
+    const quantity = bookEvent && bookEvent.quantity
+    const total = price * quantity
+
+    const totalTicket = event && event.noOfTicket - event.soldTicket
     return (
         <>
+            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">Book Event</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            {event && bookEvent ?
+                                <>
+                                    <div className="name mb-3">
+                                        <strong>Name:</strong> {bookEvent && bookEvent.name}
+                                    </div>
+                                    <div className="email mb-3">
+                                        <strong>Email:</strong> {bookEvent && bookEvent.email}
+                                    </div>
+                                    <div className="phoneno mb-3">
+                                        <strong>Phone no:</strong> {bookEvent && bookEvent.phoneno}
+                                    </div>
+                                    <div className="price">
+                                        <table className="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Event Name</th>
+                                                    <th scope="col">Quantity</th>
+                                                    <th scope="col">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{event && event.eventName}</td>
+                                                    <td>{bookEvent && bookEvent.quantity}</td>
+                                                    <td>₹{event && event.totalPrice}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div className="d-flex justify-content-end">
+                                            <div>
+                                                <p className="text-right"><strong>Total Price:</strong></p>
+                                                <p className="text-right">₹{total}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </> :
+                                <div>
+                                    <p>Form not submitted yet. Please submit the form.</p>
+                                </div>
+                            }
+                        </div>
+
+                        <div className="modal-footer">
+                            <button type="button" ref={refclose} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" className={`btn btn-primary ${bookEvent && event ? '' : 'd-none'}`} onClick={handleModelPurchaseEvent}>Book Event</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <Header logo={'https://demo.egenslab.com/html/eventlab/assets/images/logo-v2.png'} />
             <Hero name={'Event Details'} />
+            <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
             <div className="event-details-wrapper ">
                 <div className="container pt-5 position-relative">
                     <div className="row">
@@ -79,7 +166,7 @@ const EventDetail = () => {
                                     <ul className="ed-status">
                                         <li><i className="bi bi-calendar2-week"></i>  {event && moment(event.eventStDate).format('MMMM Do YYYY')}</li>
                                         <li className="active"><i className="bi bi-diagram-3"></i> <span>{event && event.noOfTicket}</span> Seat</li>
-                                        <li><i class="bi bi-geo"></i> {event && event.eventLocation}</li>
+                                        <li><i className="bi bi-geo"></i> {event && event.eventLocation}</li>
                                     </ul>
                                     <div className="event-info row align-items-center justify-content-between">
                                         <div className="col-lg-3 col-md-4">
@@ -114,6 +201,11 @@ const EventDetail = () => {
                                         </div>
                                     </div>
                                 </div>
+                                <ul className="d-flex justify-content-between align-items-center mx-3 flex-wrap pt-3 pb-2 ">
+                                    <li className="pt-2 fw-semibold fs-6 text-secondary-emphasis"><i className="bi bi-diagram-3 me-2"></i> <span>{event && totalTicket}</span> Availabel Seat</li>
+                                    <li className="pt-2 fw-semibold fs-6 text-secondary-emphasis"><i className="bi bi-calendar2-week"></i>  <span>{event && moment(event.eventEndDate).format('MMMM Do YYYY')}</span>  Event End Date</li>
+                                    <li className='pt-2 fw-semibold fs-6 text-secondary-emphasis'><i className="bi bi-tag-fill me-2"></i> ₹ {event && event.totalPrice} Price</li>
+                                </ul>
                                 <div className="ed-tabs-wrapper mt-3">
                                     <div className="tab-content" id="pills-tabContent2">
                                         <div className="tab-pane fade show active" id="pills-details" role="tabpanel"
@@ -200,36 +292,34 @@ const EventDetail = () => {
                         </div>
                         <div className="col-xl-4">
                             <div className="event-d-sidebar">
-                                <div className="event-book-form">
-                                    <div className="category-title"><i className="bi bi-bookmark-check"></i>
-                                        <h4>Book This Event</h4>
+                                {!localStorage.getItem('usertoken') ?
+                                    <div className='text-center m-5'>
+                                        <Link to="/login" className='nav-btn'><button className='primary-btn-fill'>Please Login/Register</button></Link>
                                     </div>
-                                    <form action="#" id="event-book" className="event-book">
-                                        <div className="primary-input-group">
-                                            <input type="text" id="e-name" placeholder="Your Full Name" />
+                                    : event && event.soldTicket === event.noOfTicket ? <div>
+                                        This Event show is full. Please book another event.
+                                    </div> : <div className="event-book-form">
+                                        <div className="category-title"><i className="bi bi-bookmark-check"></i>
+                                            <h4>Book This Event</h4>
                                         </div>
-                                        <div className="primary-input-group">
-                                            <input type="email" id="e-email" placeholder="Your Email" />
-                                        </div>
-                                        <div className="primary-input-group">
-                                            <input type="tel" id="e-tel" placeholder="Phone" />
-                                        </div>
-                                        <div className="primary-input-group">
-                                            <select className="primary-select">
-                                                <option selected disabled hidden>Select quantity</option>
-                                                <option value="1">Quantity 1</option>
-                                                <option value="2">Quantity 2</option>
-                                                <option value="3">Quantity 3</option>
-                                            </select>
-                                        </div>
-                                        <div className="primary-input-group">
-                                            <input type="text" id="lname" placeholder="Your Full Name" />
-                                        </div>
-                                        <div className="submit-btn">
-                                            <button type="submit" className="primary-submit d-block w-100">Submit Now</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                        <form action="#" method='post' id="event-book" className="event-book">
+                                            <div className="primary-input-group">
+                                                <input type="text" id="e-name" name='name' value={bookEvent && bookEvent.name} onChange={onchange} placeholder="Your Full Name" required />
+                                            </div>
+                                            <div className="primary-input-group">
+                                                <input type="email" id="e-email" name='email' value={bookEvent && bookEvent.email} onChange={onchange} placeholder="Your Email" required />
+                                            </div>
+                                            <div className="primary-input-group">
+                                                <input type="tel" id="e-tel" name='phoneno' value={bookEvent && bookEvent.phoneno} onChange={onchange} placeholder="Phone" required />
+                                            </div>
+                                            <div className="primary-input-group">
+                                                <input type="number" placeholder='Quantiy' value={bookEvent && bookEvent.quantity} onChange={onchange} name='quantity' required />
+                                            </div>
+                                            <div className="submit-btn">
+                                                <button type="submit" onClick={handlePurchaseEvent} className="primary-submit d-block w-100">Book Event</button>
+                                            </div>
+                                        </form>
+                                    </div>}
                                 {/* <div className="event-d-sidebar-cards">
                             <div className="category-title"><i className="bi bi-layout-text-sidebar-reverse"></i>
                                 <h4>Recent Event</h4>
@@ -265,9 +355,9 @@ const EventDetail = () => {
                                         <div className="organizer-image">
                                             <img src={user && user.image} alt="img" />
                                         </div>
-                                        <h4>{user && user.fname } {user && user.lname}</h4>
-                                        <h6 className='mt-2'><i class="bi bi-person-lines-fill"></i> {user && user.contactno}</h6>
-                                        <h6 className='mt-2'><i class="bi bi-envelope"></i> {user && user.email}</h6>
+                                        <h4>{user && user.fname} {user && user.lname}</h4>
+                                        <h6 className='mt-2'><i className="bi bi-person-lines-fill"></i> {user && user.contactno}</h6>
+                                        <h6 className='mt-2'><i className="bi bi-envelope"></i> {user && user.email}</h6>
                                     </div>
                                 </div>
                             </div>

@@ -28,7 +28,7 @@ const Setting = () => {
     };
 
     const context = useContext(setting)
-    const { getuser, updateuser, userImage} = context
+    const { getuser, updateorganiser, userImage} = context
     const [user, setUser] = useState()
     // setUser()
     let navigate = useNavigate()
@@ -36,7 +36,7 @@ const Setting = () => {
         const fetchuserdata = async () => {
             try {
                 const userdata = await getuser();
-                const usertoken = localStorage.getItem('token')
+                const usertoken = localStorage.getItem('organisertoken')
                 const userid = jwtDecode(usertoken)
                 const currentUser = userdata.find(element => element._id === userid.user.id);
                 if (currentUser) {
@@ -64,7 +64,7 @@ const Setting = () => {
         }
         console.log(user.image)
         // userImage(user._id,user.image)
-        updateuser(user._id, user.fname, user.lname, user.email, user.country, user.contactno, user.gender, user.detail, user.image)
+        updateorganiser(user._id, user.fname, user.lname, user.email, user.country, user.contactno, user.gender, user.detail, user.image)
     }
     const onchange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value })

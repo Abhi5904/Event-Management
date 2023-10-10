@@ -5,7 +5,7 @@ import 'react-circular-progressbar/dist/styles.css'
 import './progressbar.css'
 import { ThumbsUp } from 'lucide-react';
 
-const ProgressBar = ({title, lefname, rightname, leftcount, rightcount}) => {
+const ProgressBar = ({title}) => {
   const idCSS = "hello";
   const percentage = 70;
   return (
@@ -37,16 +37,6 @@ const ProgressBar = ({title, lefname, rightname, leftcount, rightcount}) => {
             }
           }}
         />
-        </div>
-        <div className="redialchart__content ">
-          <div className="redialchart__info">
-            <span>{lefname}</span>
-            <h4>${leftcount}</h4>
-          </div>
-          <div className="redialchart__info">
-            <span>{rightname}</span>
-            <h4>${rightcount}</h4>
-          </div>
         </div>
         </div>
       </div>

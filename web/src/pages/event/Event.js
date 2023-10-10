@@ -72,7 +72,7 @@ const Event = () => {
   const [spn, setSpn] = useState([])
   let navigate = useNavigate()
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('organisertoken')) {
       const fetchCategoryData = async () => {
         try {
           const categoryData = await getcategory();
@@ -91,7 +91,6 @@ const Event = () => {
       }
       fetchSponserData();
       fetchCategoryData();
-      getevent();
       getcategory();
       getsponser();
     } else {
@@ -100,10 +99,9 @@ const Event = () => {
     }
     // eslint-disable-next-line
   }, []);
-  console.log(catg)
-  console.log(catg.map((catgData) => {
-    console.log(new Date(catgData.date).getTime())
-  }))
+  useEffect(()=>{
+    getevent();
+  },[events])
   const updateEvent = (currentEvent) => {
     ref.current.click()
     setEvent({
@@ -135,7 +133,6 @@ const Event = () => {
       console.log('No matching category found');
     }
     editevent(event.id, event.ename, event.edetail, event.elocation, event.estdate, event.eendate, event.econtact, event.eimage, event.enoticket, event.eprice, event.ecategory, event.esponser)
-    showAlert('success', `event updated successfully`)
   }
   const onchange = (e) => {
     setEvent({ ...event, [e.target.name]: e.target.value })
@@ -167,7 +164,6 @@ const delevent = ()=>{
   deletevent(event.id)
   localStorage.removeItem('categoryid')
   localStorage.removeItem('sponserid')
-  showAlert('success',`event deleted successfully`)
 }
   // event table
   const [row, setRow] = useState(events)
@@ -180,7 +176,7 @@ const delevent = ()=>{
   events.sort((a, b) => new Date(b.date) - new Date(a.date))
   useEffect(() => {
     setRow(events);
-  }, [events]);
+  }, [events]);      
 
   const requestSearch = (searchedVal) => {
     const filteredRows = events.filter((event) => {
@@ -305,7 +301,7 @@ const delevent = ()=>{
         <div className='page__body-wrapper'>
           <Header handleSidebarBtnClick={handleSidebarBtnClick} handleDropdown={handleDropdown} dropdown={dropdown} showMenu={showMenu} />
           <div className="app__slide-wrapper">
-            <HeaderTop text={'Event List'} btnText={'Add Event'} style={'visible'} redirect={"/event/addevent"} />
+            <HeaderTop text={'Event List'} btnText={'Add Event'} style={'visible'} redirect={"/organiser/event/addevent"} />
             <button ref={refdelete} type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#delete"></button>
             <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
             </button>
@@ -339,7 +335,7 @@ const delevent = ()=>{
                               <TableBody>
                                 {row.length === 0 ? <TableCell>No event availabel please add event</TableCell> :
                                   row && row.slice(pg * rpg, pg * rpg + rpg).map((event, index) => {
-                                    return <Eventitem showAlert={showAlert} index={index} event={event} key={event._id} updateEvent={updateEvent} handledeleteEvent={handledeleteEvent}/>
+                                    return <Eventitem index={index} event={event} key={event._id} updateEvent={updateEvent} handledeleteEvent={handledeleteEvent}/>
                                   })}
                               </TableBody>
                             </Table>

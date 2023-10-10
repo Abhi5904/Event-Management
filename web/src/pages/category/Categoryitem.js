@@ -1,9 +1,8 @@
-import React, { useContext, useRef } from 'react'
+import React from 'react'
 import { FileEdit, Trash2 } from 'lucide-react'
-// import Alert,{showAlert} from '../../components/alert/Alert'
 
 const Categoryitem = (props) => {
-    const { category, updateCategory, index,handleDeleteCategory } = props
+    const { category, updateCategory, index, handleDeleteCategory } = props
     return (
         <>
             <tr>
@@ -25,7 +24,7 @@ const Categoryitem = (props) => {
                 <td>
                     <div className="attendant__action d-flex gap-2">
                         <span onClick={() => { updateCategory(category) }}><FileEdit absoluteStrokeWidth /></span>
-                        <span onClick={()=>handleDeleteCategory(category)}><Trash2 absoluteStrokeWidth color='red' /></span>
+                        <span onClick={() => handleDeleteCategory(category)}><Trash2 absoluteStrokeWidth color='red' /></span>
                     </div>
                 </td>
             </tr>

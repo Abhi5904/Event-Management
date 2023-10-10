@@ -44,14 +44,7 @@ const Addcategory = () => {
       showAlert('error', 'Please fill out all fields.');
       return;
     }
-
-    const regex = /^\S*$/;
-    if(!regex.test(category.title)){
-      showAlert("error", "Input field can not be blank.");
-    }
-
     addcategory(category.title, category.detail)
-    // setCategory({ title: e.target.title, detail: e.target.detail })
     setCategory({ title: '', detail: '' })
   }
   const onchange = (e) => {

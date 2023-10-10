@@ -7,8 +7,8 @@ import Eventstate from '../context/Eventstate'
 const User = () => {
   return (
     <>
-    {/* <Router> */}
-      {/* <Eventstate> */}
+    {/* <Router>
+      <Eventstate> */}
         <Routes>
             <Route path='/'>
                 <Route index element={<Home/>}/>
@@ -16,8 +16,8 @@ const User = () => {
                 <Route path='eventdetail/:eventId' element={<EventDetail/>}/>
             </Route>
         </Routes>
-      {/* </Eventstate> */}
-    {/* </Router> */}
+      {/* </Eventstate>
+    </Router> */}
     </>
   )
 }

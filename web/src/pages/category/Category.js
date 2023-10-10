@@ -53,7 +53,7 @@ const Category = () => {
   let navigate = useNavigate()
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('organisertoken')) {
       getcategory();
     }
     else {
@@ -61,7 +61,7 @@ const Category = () => {
       navigate('/login')
     }
     // eslint-disable-next-line
-  }, [])
+  }, [categorys])
 
   // for sorting category list descending order(to see recent event first)
 
@@ -71,8 +71,9 @@ const Category = () => {
     refclose.current.click()
 
     const regex = /^\S*$/;
-    if(!regex.test(catgory.etitle) || !regex.test(catgory.edetail)){
+    if (!regex.test(catgory.etitle) || !regex.test(catgory.edetail)) {
       showAlert("error", "Input field can not be blank.");
+      return 
     }
 
     const catgdecodedDataArray = [];
@@ -151,8 +152,6 @@ const Category = () => {
       }
     })
     deletecategory(catgory.id)
-    showAlert('success', `category deleted successfully`)
-
   }
 
   // category table
@@ -201,12 +200,12 @@ const Category = () => {
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            Once a category is deleted, it cannot be recovered.
-            Do you want to delete a category?
+              Once a category is deleted, it cannot be recovered.
+              Do you want to delete a category?
             </div>
             <div class="modal-footer">
               <button ref={refdeleteclose} type="button" class="btn btn-secondary d-none" data-bs-dismiss="modal">Close</button>
-              <button onClick={delcategory}  type="button" class="btn btn-primary">delete category</button>
+              <button onClick={delcategory} type="button" class="btn btn-primary">delete category</button>
             </div>
           </div>
         </div>
@@ -240,7 +239,7 @@ const Category = () => {
         <div className='page__body-wrapper'>
           <Header handleSidebarBtnClick={handleSidebarBtnClick} handleDropdown={handleDropdown} dropdown={dropdown} showMenu={showMenu} />
           <div className="app__slide-wrapper">
-            <HeaderTop text={'Category List'} style={'visible'} btnText={'Add Category'} redirect={"/event/category/addcategory"} />
+            <HeaderTop text={'Category List'} style={'visible'} btnText={'Add Category'} redirect={"/organiser/event/category/addcategory"} />
             <button ref={refdelete} type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#delete"></button>
             <button ref={ref} type="button" className="d-none btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             </button>
@@ -272,7 +271,7 @@ const Category = () => {
                                 {row && row.length === 0 ? <TableCell>No category availabel please add category</TableCell> :
                                   row && row.slice(pg * rpg, pg * rpg + rpg).map((category, index) => {
                                     if (category) {
-                                      return <Categoryitem showAlert={showAlert} index={index} category={category} key={category._id} updateCategory={updateCategory} handleDeleteCategory={handleDeleteCategory} />
+                                      return <Categoryitem index={index} category={category} key={category._id} updateCategory={updateCategory} handleDeleteCategory={handleDeleteCategory} />
                                     }
                                     else {
                                       return null

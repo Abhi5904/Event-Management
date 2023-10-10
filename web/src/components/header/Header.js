@@ -30,7 +30,7 @@ const Header = ({ handleSidebarBtnClick }) => {
         const fetchuserdata = async () => {
           try {
             const userdata = await getuser();
-            const usertoken = localStorage.getItem('token')
+            const usertoken = localStorage.getItem('organisertoken')
             const userid = jwtDecode(usertoken)
             const currentUser = userdata.find(element => element._id === userid.user.id);
             if (currentUser) {
@@ -44,7 +44,7 @@ const Header = ({ handleSidebarBtnClick }) => {
       }, [])
 
       const handleLogOut = ()=>{
-        localStorage.removeItem('token')
+        localStorage.removeItem('organisertoken')
         localStorage.removeItem('categoryData')
         localStorage.removeItem('sponserData')
         localStorage.removeItem('categoryid')
@@ -148,13 +148,13 @@ const Header = ({ handleSidebarBtnClick }) => {
                                     <ul className='m-0 p-0'>
                                         <li className='d-flex '>
                                             <User className='me-2'/>
-                                            <Link to="/profile">
+                                            <Link to="/organiser/profilem">
 
                                                 Profile</Link>
                                         </li>
                                         <li className='d-flex'>
                                         <LogOut className='me-2' />
-                                            <Link to="/login" onClick={handleLogOut}>
+                                            <Link to="/" onClick={handleLogOut}>
                                                 Logout</Link>
                                         </li>
                                     </ul>
